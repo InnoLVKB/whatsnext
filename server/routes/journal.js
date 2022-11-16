@@ -1,25 +1,29 @@
 const express = require("express")
 const journal = express.Router();
+const JournalControllers = require('../controllers/journal.js')
 
 
 
 //Journal New Post    date,entry,mood,user_id   res: {id,date,entry,mood,user_id}
-user.post('/new', function(req,res) {
-    return res.status(200);
-})
+journal.post('/new',
+    JournalControllers.postJournal,
+    function(req,res) {
+        return res.status(200).json(res.locals.journal)
+    }
+);
 
-//Journal Post    date, user_id   res: {id,date,entry,mood,user_id}
-user.post('/:date', function(req,res) {
-    return res.status(200);
+//Get Journal Post    date, user_id   res: {id,date,entry,mood,user_id}
+journal.post('/date', JournalControllers.getJournal, function(req,res) {
+    return res.status(200).json(res.locals.journal);
 })
 
 //Journal Post Update    id, user_id, new entry   res: {id,date,entry,mood,user_id}
-user.patch('/:id', function(req,res) {
-    return res.status(200);
+journal.patch('/:id',JournalControllers.updateJournal, function(req,res) {
+    return res.status(200).json(res.locals.journal);
 })
 
 //Journal Post Delete   date, user_id   res: "Successfully deleted journal entry!"
-user.delete('/:id', function(req,res) {
+journal.delete('/:id', JournalControllers.deleteJournal, function(req,res) {
     return res.status(200).send("Successfully deleted journal entry!");
 })
 
