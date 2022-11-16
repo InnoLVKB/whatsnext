@@ -10,43 +10,54 @@ import { Menu, Transition } from '@headlessui/react'
 
 type DateType = {
   date: string;
-  isCurrentMonth: boolean;
+  isCurrentMonth?: boolean;
   isToday?: boolean;
   isSelected?: boolean;
 }
 
 const days: DateType[] = [
-  { date: '2022-01-01', isCurrentMonth: true },
-  { date: '2022-01-02', isCurrentMonth: true, isToday: true },
-  { date: '2022-01-03', isCurrentMonth: true },
-  { date: '2022-01-04', isCurrentMonth: true },
-  { date: '2022-01-05', isCurrentMonth: true },
-  { date: '2022-01-06', isCurrentMonth: true },
-  { date: '2022-01-07', isCurrentMonth: true },
-  { date: '2022-01-08', isCurrentMonth: true },
-  { date: '2022-01-09', isCurrentMonth: true },
-  { date: '2022-01-10', isCurrentMonth: true },
-  { date: '2022-01-11', isCurrentMonth: true },
-  { date: '2022-01-12', isCurrentMonth: true },
-  { date: '2022-01-13', isCurrentMonth: true },
-  { date: '2022-01-14', isCurrentMonth: true },
-  { date: '2022-01-15', isCurrentMonth: true },
-  { date: '2022-01-16', isCurrentMonth: true },
-  { date: '2022-01-17', isCurrentMonth: true },
-  { date: '2022-01-18', isCurrentMonth: true },
-  { date: '2022-01-19', isCurrentMonth: true },
-  { date: '2022-01-20', isCurrentMonth: true },
-  { date: '2022-01-21', isCurrentMonth: true },
-  { date: '2022-01-22', isCurrentMonth: true },
-  { date: '2022-01-23', isCurrentMonth: true },
-  { date: '2022-01-24', isCurrentMonth: true },
-  { date: '2022-01-25', isCurrentMonth: true },
-  { date: '2022-01-26', isCurrentMonth: true },
-  { date: '2022-01-27', isCurrentMonth: true },
-  { date: '2022-01-28', isCurrentMonth: true },
-  { date: '2022-01-29', isCurrentMonth: true },
-  { date: '2022-01-30', isCurrentMonth: true },
-  { date: '2022-01-31', isCurrentMonth: true }
+  { date: '2022-10-30' },
+  { date: '2022-10-31' },
+  { date: '2022-11-01', isCurrentMonth: true },
+  { date: '2022-11-02', isCurrentMonth: true },
+  { date: '2022-11-03', isCurrentMonth: true },
+  { date: '2022-11-04', isCurrentMonth: true },
+  { date: '2022-11-05', isCurrentMonth: true },
+  { date: '2022-11-06', isCurrentMonth: true },
+  { date: '2022-11-07', isCurrentMonth: true },
+  { date: '2022-11-08', isCurrentMonth: true },
+  { date: '2022-11-09', isCurrentMonth: true },
+  { date: '2022-11-10', isCurrentMonth: true },
+  { date: '2022-11-11', isCurrentMonth: true },
+  { date: '2022-11-12', isCurrentMonth: true },
+  { date: '2022-11-13', isCurrentMonth: true },
+  { date: '2022-11-14', isCurrentMonth: true },
+  { date: '2022-11-15', isCurrentMonth: true, isToday: true },
+  { date: '2022-11-16', isCurrentMonth: true },
+  { date: '2022-11-17', isCurrentMonth: true },
+  { date: '2022-11-18', isCurrentMonth: true },
+  { date: '2022-11-19', isCurrentMonth: true },
+  { date: '2022-11-20', isCurrentMonth: true },
+  { date: '2022-11-21', isCurrentMonth: true },
+  { date: '2022-11-22', isCurrentMonth: true },
+  { date: '2022-11-23', isCurrentMonth: true },
+  { date: '2022-11-24', isCurrentMonth: true },
+  { date: '2022-11-25', isCurrentMonth: true },
+  { date: '2022-11-26', isCurrentMonth: true },
+  { date: '2022-11-27', isCurrentMonth: true },
+  { date: '2022-11-28', isCurrentMonth: true },
+  { date: '2022-11-29', isCurrentMonth: true },
+  { date: '2022-11-30', isCurrentMonth: true },
+  { date: '2022-12-01' },
+  { date: '2022-12-02' },
+  { date: '2022-12-03' },
+  // { date: '2022-12-04' },
+  // { date: '2022-12-05' },
+  // { date: '2022-12-06' },
+  // { date: '2022-12-07' },
+  // { date: '2022-12-08' },
+  // { date: '2022-12-09' },
+  // { date: '2022-12-10' }
 ]
 
 function classNames(...classes: any) {
@@ -71,13 +82,13 @@ export default function Calendar({calDate, calDateHook}: CalendarProps) {
   })
 
   return (
-    <div className="w-[480px] px-10 bg-pink-100">
+    <div className="w-[480px] px-10 bg-pink-100 rounded-lg">
       <div>
         <div className="text-center">
-          <div className="flex items-center text-gray-900">
+          <div className="flex items-center text-gray-900 my-5">
             <button
               type="button"
-              className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+              className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 "
             >
               <span className="sr-only">Previous month</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
@@ -92,12 +103,12 @@ export default function Calendar({calDate, calDateHook}: CalendarProps) {
             </button>
           </div>
           <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+            <div>S</div>
             <div>M</div>
             <div>T</div>
             <div>W</div>
             <div>T</div>
             <div>F</div>
-            <div>S</div>
             <div>S</div>
           </div>
           <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">

@@ -28,6 +28,10 @@ export default function Home() {
         </div>
         <Journal />
       </div>
+<<<<<<< Updated upstream
     /* </ThemeContext.Provider> */
+=======
+    // </ThemeContext.Provider>
+>>>>>>> Stashed changes
   )
 }
