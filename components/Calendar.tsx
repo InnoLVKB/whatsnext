@@ -8,12 +8,14 @@ import {
 } from '@heroicons/react/20/solid'
 import { Menu, Transition } from '@headlessui/react'
 
-const days = [
-  { date: '2021-12-27' },
-  { date: '2021-12-28' },
-  { date: '2021-12-29' },
-  { date: '2021-12-30' },
-  { date: '2021-12-31' },
+type DateType = {
+  date: string;
+  isCurrentMonth: boolean;
+  isToday?: boolean;
+  isSelected?: boolean;
+}
+
+const days: DateType[] = [
   { date: '2022-01-01', isCurrentMonth: true },
   { date: '2022-01-02', isCurrentMonth: true, isToday: true },
   { date: '2022-01-03', isCurrentMonth: true },
@@ -35,7 +37,7 @@ const days = [
   { date: '2022-01-19', isCurrentMonth: true },
   { date: '2022-01-20', isCurrentMonth: true },
   { date: '2022-01-21', isCurrentMonth: true },
-  { date: '2022-01-22', isCurrentMonth: true, isSelected: true },
+  { date: '2022-01-22', isCurrentMonth: true },
   { date: '2022-01-23', isCurrentMonth: true },
   { date: '2022-01-24', isCurrentMonth: true },
   { date: '2022-01-25', isCurrentMonth: true },
@@ -44,20 +46,30 @@ const days = [
   { date: '2022-01-28', isCurrentMonth: true },
   { date: '2022-01-29', isCurrentMonth: true },
   { date: '2022-01-30', isCurrentMonth: true },
-  { date: '2022-01-31', isCurrentMonth: true },
-  { date: '2022-02-01' },
-  { date: '2022-02-02' },
-  { date: '2022-02-03' },
-  { date: '2022-02-04' },
-  { date: '2022-02-05' },
-  { date: '2022-02-06' },
+  { date: '2022-01-31', isCurrentMonth: true }
 ]
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Calendar() {
+type CalendarProps = {
+  calDate: number;
+  calDateHook: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function Calendar({calDate, calDateHook}: CalendarProps) {
+  const newDays = days.map((day, dayIdx) => {
+    if (calDate - 1 === dayIdx) {
+      return {
+        ...day,
+        isSelected: true
+      }
+    } else {
+      return day;
+    }
+  })
+
   return (
     <div className="w-[480px] px-10 bg-pink-100">
       <div>
@@ -89,7 +101,7 @@ export default function Calendar() {
             <div>S</div>
           </div>
           <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
-            {days.map((day, dayIdx) => (
+            {newDays.map((day, dayIdx) => (
               <button
                 key={day.date}
                 type="button"
@@ -106,6 +118,10 @@ export default function Calendar() {
                   dayIdx === days.length - 7 && 'rounded-bl-lg',
                   dayIdx === days.length - 1 && 'rounded-br-lg'
                 )}
+                onClick={() => {
+                  calDateHook(dayIdx + 1);
+                }
+              }
               >
                 <time
                   dateTime={day.date}

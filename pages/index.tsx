@@ -12,22 +12,22 @@ export const ThemeContext = createContext(null);
 
 export default function Home() {
   const [theme, setTheme] = useState<string>('light');
-  const [date, setDate] = useState<number>(2);
+  const [date, setDate] = useState<number>(9);
   const toggleTheme = () => {
     setTheme((prevState) => prevState === 'light' ? 'dark': 'light');
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    // <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div>
         <Header />
         <div className='flex justify-around h-1/3 space-x-8 m-8'>
           <Mood />
-          <Calendar />
+          <Calendar calDate={date} calDateHook={setDate}/>
           <Goals />
         </div>
         <Journal />
       </div>
-    </ThemeContext.Provider>
+    /* </ThemeContext.Provider> */
   )
 }
