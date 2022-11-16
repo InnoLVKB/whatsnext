@@ -3,7 +3,7 @@ const CalendarControllers = require("../controllers/calendar.js");
 const calendar = express.Router();
 
 
-//GOALS    req  = user_id   res = [{date,mood, ....}]
+//GOALS    req = user_id   res = [{date,mood, ....}]
 calendar.post('/',
     CalendarControllers.getCalendar,
     function(req,res) {

@@ -10,7 +10,7 @@ journal.post('/new',
     function(req,res) {
         return res.status(200).json(res.locals.journal)
     }
-);
+); // "11/15/2022"
 
 //Get Journal Post    date, user_id   res: {id,date,entry,mood,user_id}
 journal.post('/date', JournalControllers.getJournal, function(req,res) {

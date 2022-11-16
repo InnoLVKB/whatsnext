@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment } from 'react';
 import {
   CalendarIcon,
   ChevronLeftIcon,
@@ -7,58 +7,7 @@ import {
   MapPinIcon,
 } from '@heroicons/react/20/solid'
 import { Menu, Transition } from '@headlessui/react'
-
-type DateType = {
-  date: string;
-  isCurrentMonth?: boolean;
-  isToday?: boolean;
-  isSelected?: boolean;
-}
-
-const days: DateType[] = [
-  { date: '2022-10-30' },
-  { date: '2022-10-31' },
-  { date: '2022-11-01', isCurrentMonth: true },
-  { date: '2022-11-02', isCurrentMonth: true },
-  { date: '2022-11-03', isCurrentMonth: true },
-  { date: '2022-11-04', isCurrentMonth: true },
-  { date: '2022-11-05', isCurrentMonth: true },
-  { date: '2022-11-06', isCurrentMonth: true },
-  { date: '2022-11-07', isCurrentMonth: true },
-  { date: '2022-11-08', isCurrentMonth: true },
-  { date: '2022-11-09', isCurrentMonth: true },
-  { date: '2022-11-10', isCurrentMonth: true },
-  { date: '2022-11-11', isCurrentMonth: true },
-  { date: '2022-11-12', isCurrentMonth: true },
-  { date: '2022-11-13', isCurrentMonth: true },
-  { date: '2022-11-14', isCurrentMonth: true },
-  { date: '2022-11-15', isCurrentMonth: true, isToday: true },
-  { date: '2022-11-16', isCurrentMonth: true },
-  { date: '2022-11-17', isCurrentMonth: true },
-  { date: '2022-11-18', isCurrentMonth: true },
-  { date: '2022-11-19', isCurrentMonth: true },
-  { date: '2022-11-20', isCurrentMonth: true },
-  { date: '2022-11-21', isCurrentMonth: true },
-  { date: '2022-11-22', isCurrentMonth: true },
-  { date: '2022-11-23', isCurrentMonth: true },
-  { date: '2022-11-24', isCurrentMonth: true },
-  { date: '2022-11-25', isCurrentMonth: true },
-  { date: '2022-11-26', isCurrentMonth: true },
-  { date: '2022-11-27', isCurrentMonth: true },
-  { date: '2022-11-28', isCurrentMonth: true },
-  { date: '2022-11-29', isCurrentMonth: true },
-  { date: '2022-11-30', isCurrentMonth: true },
-  { date: '2022-12-01' },
-  { date: '2022-12-02' },
-  { date: '2022-12-03' },
-  // { date: '2022-12-04' },
-  // { date: '2022-12-05' },
-  // { date: '2022-12-06' },
-  // { date: '2022-12-07' },
-  // { date: '2022-12-08' },
-  // { date: '2022-12-09' },
-  // { date: '2022-12-10' }
-]
+import { days } from '../data/data';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -67,9 +16,11 @@ function classNames(...classes: any) {
 type CalendarProps = {
   calDate: number;
   calDateHook: React.Dispatch<React.SetStateAction<number>>;
+  setJournalNotes: React.Dispatch<React.SetStateAction<string>>;
+  setGoals: any; // plz change
 }
 
-export default function Calendar({calDate, calDateHook}: CalendarProps) {
+export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoals }: CalendarProps) {
   const newDays = days.map((day, dayIdx) => {
     if (calDate - 1 === dayIdx) {
       return {
@@ -80,6 +31,36 @@ export default function Calendar({calDate, calDateHook}: CalendarProps) {
       return day;
     }
   })
+
+  const handleGetJournal = (dayIdx: number) => {
+    calDateHook(dayIdx + 1);
+    Promise.all([
+    fetch('http://localhost:4000/journal/date', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        date: days[dayIdx].date,
+        user_id: 1
+      })
+    }),
+    fetch('http://localhost:4000/goals/date', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        date: days[dayIdx].date,
+        user_id: 1
+      })
+    })
+    ])
+      .then(([journalResponse, goalResponse]) => {
+        return Promise.all([journalResponse.json(), goalResponse.json()])
+      })
+      .then(([journalData, goalData]) => {
+        // console.log('data in Calendar', data)
+        setJournalNotes(journalData.entry);
+        setGoals(goalData);
+      })
+  }
 
   return (
     <div className="w-[480px] px-10 bg-pink-100 rounded-lg">
@@ -129,10 +110,7 @@ export default function Calendar({calDate, calDateHook}: CalendarProps) {
                   dayIdx === days.length - 7 && 'rounded-bl-lg',
                   dayIdx === days.length - 1 && 'rounded-br-lg'
                 )}
-                onClick={() => {
-                  calDateHook(dayIdx + 1);
-                }
-              }
+                onClick={() => handleGetJournal(dayIdx)}
               >
                 <time
                   dateTime={day.date}
@@ -142,7 +120,7 @@ export default function Calendar({calDate, calDateHook}: CalendarProps) {
                     day.isSelected && !day.isToday && 'bg-gray-900'
                   )}
                 >
-                  {day.date.split('-').pop().replace(/^0/, '')}
+                  {/* {day.date.split('-').pop().replace(/^0/, '')} */}
                 </time>
               </button>
             ))}

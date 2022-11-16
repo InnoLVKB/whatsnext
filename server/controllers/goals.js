@@ -9,7 +9,7 @@ const GoalsControllers = {
     db.query(query, values)
       .then((data) => {
         res.locals.goals = data.rows;
-        console.log('Grabbed goals: ', res.locals.goals);
+        console.log('Grabbed goals for: ', date, res.locals.goals);
         return next();
       })
       .catch((err) => next({
