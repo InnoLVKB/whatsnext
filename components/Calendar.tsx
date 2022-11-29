@@ -1,9 +1,8 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '@heroicons/react/20/solid'
-import { Menu, Transition } from '@headlessui/react'
 import {
   add,
   eachDayOfInterval,
@@ -11,14 +10,10 @@ import {
   format,
   getDay,
   isEqual,
-  isSameDay,
   isSameMonth,
   isToday,
   parse,
-  parseISO,
-  startOfToday,
 } from 'date-fns'
-import { days } from '../data/data';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
@@ -30,9 +25,10 @@ type CalendarProps = {
   today: Date;
   selectedDay: Date;
   setSelectedDay: React.Dispatch<React.SetStateAction<Date>>;
+  calendarData: any; // plz change
 }
 
-export default function Calendar({ setJournalNotes, setGoals, today, selectedDay, setSelectedDay }: CalendarProps) {
+export default function Calendar({ setJournalNotes, setGoals, today, selectedDay, setSelectedDay, calendarData }: CalendarProps) {
 
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
@@ -63,14 +59,24 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
   ]
 
   const moodColors = {
-    'excited': 'bg-yellow-400',
-    'happy': 'bg-green-400',
-    'content': 'bg-gray-400',
-    'sad': 'bg-blue-400',
+    'excited': 'bg-green-400',
+    'happy': 'bg-green-300',
+    'content': 'bg-green-100',
+    'sad': 'bg-blue-300',
     'angry': 'bg-red-400',
   }
 
-  // map mood
+  // combine moods and dates into one array of objects
+  const calMoods: any = [];
+  for (let i = 0; i < calendarData.length; i++) {
+    calMoods.push({date: new Date(calendarData[i].date), mood: calendarData[i].mood})
+  }
+
+  // map over days array and add mood to each day
+  const daysWithMoods = days.map((day) => {
+    const mood = calMoods.find((calMood) => isEqual(calMood.date, day))
+    return { ...day, mood: mood?.mood }
+  })
 
   const handleGetJournal = (day: Date) => {
     Promise.all([
@@ -132,13 +138,13 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
             <div>F</div>
             <div>S</div>
           </div>
-          <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+          <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg text-sm">
              {days.map((day, dayIdx) => (
                 <div
                   key={day.toString()}
                   className={classNames(
                     dayIdx === 0 && colStartClasses[getDay(day)],
-                    'py-1.5 bg-white'
+                    'py-1.5 bg-white',
                   )}
                 >
                   <button
@@ -147,7 +153,8 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
                       setSelectedDay(day)
                       handleGetJournal(day)}}
                     className={classNames(
-                      isEqual(day, selectedDay) && 'text-white',
+                      moodColors[daysWithMoods[dayIdx].mood],
+                      isEqual(day, selectedDay) && 'text-white bg-pink-500',
                       !isEqual(day, selectedDay) &&
                         isToday(day) &&
                         'text-green-500',
@@ -159,7 +166,7 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
                         !isToday(day) &&
                         !isSameMonth(day, firstDayCurrentMonth) &&
                         'text-gray-400',
-                      isEqual(day, selectedDay) && isToday(day) && 'bg-green-300',
+                      // isEqual(day, selectedDay) && isToday(day) && 'bg-green-300',
                       isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         'bg-gray-900',

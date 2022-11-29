@@ -47,7 +47,6 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
     })
       .then(res => res.json())
       .then(goalData => {
-        console.log('goalData', goalData);
         setGoals((prevGoals: any) => [...prevGoals, ...goalData])
         setGoal('')
         setDescription('')
