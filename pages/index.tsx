@@ -19,6 +19,7 @@ export default function Home() {
   const [calendarData, setCalendarData] = useState([]);
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = useState(today)
+  const [selectedDayMood, setSelectedDayMood] = useState('')
 
   useEffect(() => {
     Promise.all([
@@ -64,8 +65,8 @@ export default function Home() {
     <div>
       <Header />
       <div className='flex justify-around h-1/3 space-x-8 m-6'>
-        <Mood mood={mood} setMood={setMood} />
-        <Calendar today={today} selectedDay={selectedDay} calendarData={calendarData} setSelectedDay={setSelectedDay} setJournalNotes={setJournalNotes} setGoals={setGoals}/>
+        <Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
+        <Calendar today={today} selectedDay={selectedDay} calendarData={calendarData} setSelectedDay={setSelectedDay} setJournalNotes={setJournalNotes} setGoals={setGoals} setSelectedDayMood={setSelectedDayMood} setMood={setMood}/>
         <Goals goals={goals} selectedDay={selectedDay} date={date} setGoals={setGoals} />
       </div>
       <Journal selectedDay={selectedDay} journalNotes={journalNotes} setJournalNotes={setJournalNotes} mood={mood} />

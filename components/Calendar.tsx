@@ -26,9 +26,11 @@ type CalendarProps = {
   selectedDay: Date;
   setSelectedDay: React.Dispatch<React.SetStateAction<Date>>;
   calendarData: any; // plz change
+  setSelectedDayMood: React.Dispatch<React.SetStateAction<string>>;
+  setMood: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Calendar({ setJournalNotes, setGoals, today, selectedDay, setSelectedDay, calendarData }: CalendarProps) {
+export default function Calendar({ setJournalNotes, setGoals, today, selectedDay, setSelectedDay, calendarData, setSelectedDayMood, setMood }: CalendarProps) {
 
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
@@ -66,7 +68,7 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
     'angry': 'bg-red-400',
   }
 
-  // combine moods and dates into one array of objects
+  // combine moods and dates into one array of objects from calendar data
   const calMoods: any = [];
   for (let i = 0; i < calendarData.length; i++) {
     calMoods.push({date: new Date(calendarData[i].date), mood: calendarData[i].mood})
@@ -103,6 +105,8 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
       .then(([journalData, goalData]) => {
         setJournalNotes(journalData.entry);
         setGoals(goalData);
+        setSelectedDayMood(journalData.mood)
+        setMood('');
       })
   }
 
@@ -154,10 +158,10 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
                       handleGetJournal(day)}}
                     className={classNames(
                       moodColors[daysWithMoods[dayIdx].mood],
-                      isEqual(day, selectedDay) && 'text-white bg-pink-500',
+                      isEqual(day, selectedDay) && 'text-white bg-gray-900',
                       !isEqual(day, selectedDay) &&
                         isToday(day) &&
-                        'text-green-500',
+                        'text-pink-500',
                       !isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         isSameMonth(day, firstDayCurrentMonth) &&
@@ -166,7 +170,6 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
                         !isToday(day) &&
                         !isSameMonth(day, firstDayCurrentMonth) &&
                         'text-gray-400',
-                      // isEqual(day, selectedDay) && isToday(day) && 'bg-green-300',
                       isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         'bg-gray-900',
