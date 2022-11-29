@@ -4,12 +4,13 @@ import { days } from '../data/data';
 
 interface Props {
   date: number,
-  goals: any // change this
-  setGoals: any
+  goals: any, // change this
+  setGoals: any,
+  selectedDay: Date,
 }
 
 
-function Goals({ goals, date, setGoals }: Props) {
+function Goals({ goals, date, setGoals, selectedDay }: Props) {
   // const [completed, setCompleted] = useState<boolean>(false);
 
   const [goal, setGoal] = useState<string>('');
@@ -38,7 +39,7 @@ function Goals({ goals, date, setGoals }: Props) {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         name: goal,
-        date: days[date - 1].date,
+        date: selectedDay.toISOString(),
         description: description,
         status: false,
         user_id: 1
@@ -46,7 +47,6 @@ function Goals({ goals, date, setGoals }: Props) {
     })
       .then(res => res.json())
       .then(goalData => {
-        console.log('goalData', goalData);
         setGoals((prevGoals: any) => [...prevGoals, ...goalData])
         setGoal('')
         setDescription('')

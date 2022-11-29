@@ -1,45 +1,91 @@
-import { Fragment } from 'react';
+import { useState } from 'react';
 import {
-  CalendarIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  EllipsisHorizontalIcon,
-  MapPinIcon,
 } from '@heroicons/react/20/solid'
-import { Menu, Transition } from '@headlessui/react'
-import { days } from '../data/data';
+import {
+  add,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isEqual,
+  isSameMonth,
+  isToday,
+  parse,
+} from 'date-fns'
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 type CalendarProps = {
-  calDate: number;
-  calDateHook: React.Dispatch<React.SetStateAction<number>>;
   setJournalNotes: React.Dispatch<React.SetStateAction<string>>;
-  setGoals: any; // plz change
+  setGoals: React.Dispatch<React.SetStateAction<any[]>>;
+  today: Date;
+  selectedDay: Date;
+  setSelectedDay: React.Dispatch<React.SetStateAction<Date>>;
+  calendarData: any[];
+  setSelectedDayMood: React.Dispatch<React.SetStateAction<string>>;
+  setMood: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoals }: CalendarProps) {
-  const newDays = days.map((day, dayIdx) => {
-    if (calDate - 1 === dayIdx) {
-      return {
-        ...day,
-        isSelected: true
-      }
-    } else {
-      return day;
-    }
+export default function Calendar({ setJournalNotes, setGoals, today, selectedDay, setSelectedDay, calendarData, setSelectedDayMood, setMood }: CalendarProps) {
+
+  const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
+  const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
+
+  const days = eachDayOfInterval({
+    start: firstDayCurrentMonth,
+    end: endOfMonth(firstDayCurrentMonth),
   })
 
-  const handleGetJournal = (dayIdx: number) => {
-    calDateHook(dayIdx + 1);
+  function previousMonth() {
+    let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 })
+    setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'))
+  }
+
+  function nextMonth() {
+    let firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 })
+    setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'))
+  }
+
+  const colStartClasses = [
+  '',
+  'col-start-2',
+  'col-start-3',
+  'col-start-4',
+  'col-start-5',
+  'col-start-6',
+  'col-start-7',
+  ]
+
+  const moodColors = {
+    'excited': 'bg-green-400',
+    'happy': 'bg-green-300',
+    'content': 'bg-green-100',
+    'sad': 'bg-blue-300',
+    'angry': 'bg-red-400',
+  }
+
+  // combine moods and dates rom calendar data
+  const calMoods: Array<any> = [];
+  for (let i = 0; i < calendarData.length; i++) {
+    calMoods.push({date: new Date(calendarData[i].date), mood: calendarData[i].mood})
+  }
+  // match moods to days array
+  const daysWithMoods = days.map((day) => {
+    const mood = calMoods.find((calMood) => isEqual(calMood.date, day))
+    return { ...day, mood: mood?.mood }
+  })
+
+  const handleGetJournal = (day: Date) => {
     Promise.all([
     fetch('http://localhost:4000/journal/date', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        date: days[dayIdx].date,
+        date: day.toISOString(),
         user_id: 1
       })
     }),
@@ -47,7 +93,7 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        date: days[dayIdx].date,
+        date: day.toISOString(),
         user_id: 1
       })
     })
@@ -58,6 +104,8 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
       .then(([journalData, goalData]) => {
         setJournalNotes(journalData.entry);
         setGoals(goalData);
+        setSelectedDayMood(journalData.mood)
+        setMood(''); // reset mood wnen new day is selected
       })
   }
 
@@ -68,14 +116,16 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
           <div className="flex items-center text-gray-900 my-5">
             <button
               type="button"
+              onClick={previousMonth}
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 "
             >
               <span className="sr-only">Previous month</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </button>
-            <div className="flex-auto font-semibold">November</div>
+            <div className="flex-auto font-semibold">{format(firstDayCurrentMonth, 'MMMM yyyy')}</div>
             <button
               type="button"
+              onClick={nextMonth}
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
             >
               <span className="sr-only">Next month</span>
@@ -91,38 +141,49 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
             <div>F</div>
             <div>S</div>
           </div>
-          <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
-            {newDays.map((day, dayIdx) => (
-              <button
-                key={day.date}
-                type="button"
-                className={classNames(
-                  'py-1.5 hover:bg-gray-100 focus:z-10',
-                  day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
-                  (day.isSelected || day.isToday) && 'font-semibold',
-                  day.isSelected && 'text-white',
-                  !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
-                  !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400',
-                  day.isToday && !day.isSelected && 'text-indigo-600',
-                  dayIdx === 0 && 'rounded-tl-lg',
-                  dayIdx === 6 && 'rounded-tr-lg',
-                  dayIdx === days.length - 7 && 'rounded-bl-lg',
-                  dayIdx === days.length - 1 && 'rounded-br-lg'
-                )}
-                onClick={() => handleGetJournal(dayIdx)}
-              >
-                <time
-                  dateTime={day.date}
+          <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg text-sm">
+             {days.map((day, dayIdx) => (
+                <div
+                  key={day.toString()}
                   className={classNames(
-                    'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                    day.isSelected && day.isToday && 'bg-indigo-600',
-                    day.isSelected && !day.isToday && 'bg-gray-900'
+                    dayIdx === 0 && colStartClasses[getDay(day)],
+                    'py-1.5 bg-white',
                   )}
                 >
-                  {day.date.split('-').pop().replace(/^0/, '')}
-                </time>
-              </button>
-            ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedDay(day)
+                      handleGetJournal(day)}}
+                    className={classNames(
+                      moodColors[daysWithMoods[dayIdx].mood],
+                      isEqual(day, selectedDay) && 'text-white bg-gray-900',
+                      !isEqual(day, selectedDay) &&
+                        isToday(day) &&
+                        'text-pink-500', // can change how current day is styled
+                      !isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        isSameMonth(day, firstDayCurrentMonth) &&
+                        'text-gray-900',
+                      !isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        !isSameMonth(day, firstDayCurrentMonth) &&
+                        'text-gray-400',
+                      isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        'bg-gray-900',
+                      !isEqual(day, selectedDay) && 'hover:bg-gray-200',
+                      (isEqual(day, selectedDay) || isToday(day)) &&
+                        'font-semibold',
+                      'mx-auto flex h-8 w-8 items-center justify-center rounded-full'
+                    )}
+                  >
+                    <time dateTime={format(day, 'yyyy-MM-dd')}>
+                      {format(day, 'd')}
+                    </time>
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </div>
