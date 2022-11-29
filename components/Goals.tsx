@@ -60,7 +60,7 @@ function Goals({ goals, date, setGoals }: Props) {
       <fieldset className="space-y-3 p-2 h-40 overflow-x-auto scrollbar scrollbar-thumb-gray-700 scrollbar-track-gray-100">
         <legend className="sr-only">Goals</legend>
         {goals.map((goal: any, index: number) => (
-          <div className="relative flex items-start">
+          <div className="relative flex items-start" key={index}>
             <div className="flex h-5 items-center">
               <input
                 id="comments"
