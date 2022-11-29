@@ -12,19 +12,10 @@ import { days } from '../data/data';
 export const ThemeContext = createContext(null);
 
 export default function Home() {
-  // const [theme, setTheme] = useState<string>('light');
   const [date, setDate] = useState<number>(15);
-  // const toggleTheme = () => {
-  //   setTheme((prevState) => prevState === 'light' ? 'dark': 'light');
-  // }
   const [journalNotes, setJournalNotes] = useState<string>('');
   const [goals, setGoals] = useState([]);
-  console.log('rerender', journalNotes)
-
-  // const body = {
-  //   date: days[date - 1].date,
-  //   user_id: 1
-  // };
+  const [mood, setMood] = useState<string>('');
 
   useEffect(() => {
     Promise.all([
@@ -51,24 +42,22 @@ export default function Home() {
         return Promise.all([journalResponse.json(), goalResponse.json()])
       })
       .then(([journalData, goalData]) => {
-        // console.log('data', data)
+        console.log('data in index', journalData)
         setJournalNotes(journalData.entry);
         setGoals(goalData);
-        // console.log('goals:', goalData);
+        setMood(journalData.mood);
       })
   },[]);
 
   return (
-    // <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div>
-        <Header />
-        <div className='flex justify-around h-1/3 space-x-8 m-6'>
-          <Mood />
-          <Calendar calDate={date} calDateHook={setDate} setJournalNotes={setJournalNotes} setGoals={setGoals}/>
-          <Goals goals={goals} date={date} setGoals={setGoals} />
-        </div>
-        <Journal date={date} journalNotes={journalNotes} setJournalNotes={setJournalNotes} />
+    <div>
+      <Header />
+      <div className='flex justify-around h-1/3 space-x-8 m-6'>
+        <Mood mood={mood} setMood={setMood} />
+        <Calendar calDate={date} calDateHook={setDate} setJournalNotes={setJournalNotes} setGoals={setGoals}/>
+        <Goals goals={goals} date={date} setGoals={setGoals} />
       </div>
-    /* </ThemeContext.Provider> */
+      <Journal date={date} journalNotes={journalNotes} setJournalNotes={setJournalNotes} mood={mood} />
+    </div>
   )
 }

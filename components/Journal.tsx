@@ -4,36 +4,13 @@ import { days } from '../data/data';
 type JournalPropsType = {
   date: number;
   journalNotes: string;
+  mood: string;
   setJournalNotes: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function Journal({ date, journalNotes, setJournalNotes }: JournalPropsType) {
+function Journal({ date, journalNotes, setJournalNotes, mood }: JournalPropsType) {
   const [isEditting, setIsEditting] = useState<boolean>(false);
-  // const [journalNotes, setJournalNotes] = useState<string>('');
-
-  // 
-  // MM-DD-YYYY 
-  // YYYY-MM-DD
-
-  //date, user_id   res: {id,date,entry,mood,user_id}
-  // useEffect(() => {
-    
-  //   fetch('http://localhost:4000/journal/date', {
-  //     method: 'POST',
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: JSON.stringify({
-  //       date: days[date - 1].date,
-  //       user_id: 1
-  //     })
-  //   })
-  //     .then(response => {
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       console.log('data', data)
-  //       setJournalNotes(data.entry);
-  //     })
-  // },[]);
+ 
 
   const handleCreateAndUpdateJournal = () => {
     fetch('http://localhost:4000/journal/new', {
@@ -42,7 +19,7 @@ function Journal({ date, journalNotes, setJournalNotes }: JournalPropsType) {
       body: JSON.stringify({
         date: days[date - 1].date,
         entry: journalNotes,
-        mood: 'sad',
+        mood: mood,
         user_id: 1
       })
     })
@@ -50,7 +27,6 @@ function Journal({ date, journalNotes, setJournalNotes }: JournalPropsType) {
       return response.json();
     })
     .then(data => {
-      console.log('data in handleCreateAndUpdateJournal', data)
       setJournalNotes(data.entry);
       setIsEditting(!isEditting)
     })

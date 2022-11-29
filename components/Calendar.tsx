@@ -56,7 +56,6 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
         return Promise.all([journalResponse.json(), goalResponse.json()])
       })
       .then(([journalData, goalData]) => {
-        // console.log('data in Calendar', data)
         setJournalNotes(journalData.entry);
         setGoals(goalData);
       })
@@ -120,7 +119,7 @@ export default function Calendar({ calDate, calDateHook, setJournalNotes, setGoa
                     day.isSelected && !day.isToday && 'bg-gray-900'
                   )}
                 >
-                  {/* {day.date.split('-').pop().replace(/^0/, '')} */}
+                  {day.date.split('-').pop().replace(/^0/, '')}
                 </time>
               </button>
             ))}
