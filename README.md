@@ -7,7 +7,7 @@ whatsnext is a calendar app that allows you to write down your thoughts, or what
 * React
 * Next.js
 * PostgreSQL
-* Node
+* Node.js
 * Express
 * TailwindCSS
 * TailwindUI
