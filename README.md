@@ -1,7 +1,7 @@
 <p align="center"><img src="https://i.ibb.co/dByD4H7/Pastel-Colorful-Aesthetic-Minimalist-Gradient-Ombre-Elegant-Oval-Brand-Business-Logo.png" alt="whatsnext logo" height="200" border="1" /></p>
 
 # whatsnext
-whatsnext is a calendar app that allows you to write down your thoughts, or whatever they want, every day. You can also keep track of your mood from day to day, set goals, and cross them off as you've completed them, to help with self-growth and reflection.
+whatsnext is a calendar app that allows you to write down your thoughts, or whatever you want, every day. You can also keep track of your mood from day to day, set goals, and cross them off as you've completed them, to help with self-growth and reflection.
 
 ## built with...
 * React
