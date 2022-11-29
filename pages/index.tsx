@@ -14,12 +14,12 @@ export const ThemeContext = createContext(null);
 export default function Home() {
   const [date, setDate] = useState<number>(15);
   const [journalNotes, setJournalNotes] = useState<string>('');
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState<any[]>([]);
   const [mood, setMood] = useState<string>('');
-  const [calendarData, setCalendarData] = useState([]);
+  const [calendarData, setCalendarData] = useState<any[]>([]);
   const today = startOfToday();
-  const [selectedDay, setSelectedDay] = useState(today)
-  const [selectedDayMood, setSelectedDayMood] = useState('')
+  const [selectedDay, setSelectedDay] = useState(today);
+  const [selectedDayMood, setSelectedDayMood] = useState<string>('');
 
   useEffect(() => {
     Promise.all([

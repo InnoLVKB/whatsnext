@@ -21,11 +21,11 @@ function classNames(...classes: any) {
 
 type CalendarProps = {
   setJournalNotes: React.Dispatch<React.SetStateAction<string>>;
-  setGoals: any; // plz change
+  setGoals: React.Dispatch<React.SetStateAction<any[]>>;
   today: Date;
   selectedDay: Date;
   setSelectedDay: React.Dispatch<React.SetStateAction<Date>>;
-  calendarData: any; // plz change
+  calendarData: any[];
   setSelectedDayMood: React.Dispatch<React.SetStateAction<string>>;
   setMood: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -68,13 +68,12 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
     'angry': 'bg-red-400',
   }
 
-  // combine moods and dates into one array of objects from calendar data
-  const calMoods: any = [];
+  // combine moods and dates rom calendar data
+  const calMoods: Array<any> = [];
   for (let i = 0; i < calendarData.length; i++) {
     calMoods.push({date: new Date(calendarData[i].date), mood: calendarData[i].mood})
   }
-
-  // map over days array and add mood to each day
+  // match moods to days array
   const daysWithMoods = days.map((day) => {
     const mood = calMoods.find((calMood) => isEqual(calMood.date, day))
     return { ...day, mood: mood?.mood }
@@ -106,7 +105,7 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
         setJournalNotes(journalData.entry);
         setGoals(goalData);
         setSelectedDayMood(journalData.mood)
-        setMood('');
+        setMood(''); // reset mood wnen new day is selected
       })
   }
 
@@ -161,7 +160,7 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
                       isEqual(day, selectedDay) && 'text-white bg-gray-900',
                       !isEqual(day, selectedDay) &&
                         isToday(day) &&
-                        'text-pink-500',
+                        'text-pink-500', // can change how current day is styled
                       !isEqual(day, selectedDay) &&
                         !isToday(day) &&
                         isSameMonth(day, firstDayCurrentMonth) &&
