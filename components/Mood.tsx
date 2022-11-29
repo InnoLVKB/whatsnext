@@ -34,7 +34,7 @@ function Mood({ mood, setMood }: MoodPropsType) {
             <Image id = "content" className={`${imageStyle}`} src='/content.png' alt='content' width='80' height='100' />
           </button>
           <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
-            <Image  id = "frustrated" className={`${imageStyle}`} src='/sad.png' alt='sad' width='80' height='100' />
+            <Image  id = "sad" className={`${imageStyle}`} src='/sad.png' alt='sad' width='80' height='100' />
           </button>
           <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
             <Image  id = "mad" className={`${imageStyle}`} src='/mad.png' alt='mad' width='80' height='100' />

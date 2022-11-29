@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import { days } from '../data/data';
 
 type JournalPropsType = {
-  date: number;
   journalNotes: string;
   mood: string;
   setJournalNotes: React.Dispatch<React.SetStateAction<string>>;
+  selectedDay: Date;
 }
 
-function Journal({ date, journalNotes, setJournalNotes, mood }: JournalPropsType) {
+function Journal({ journalNotes, setJournalNotes, mood, selectedDay }: JournalPropsType) {
   const [isEditting, setIsEditting] = useState<boolean>(false);
  
 
@@ -17,7 +17,7 @@ function Journal({ date, journalNotes, setJournalNotes, mood }: JournalPropsType
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        date: days[date - 1].date,
+        date: selectedDay.toISOString(),
         entry: journalNotes,
         mood: mood,
         user_id: 1
@@ -42,7 +42,7 @@ function Journal({ date, journalNotes, setJournalNotes, mood }: JournalPropsType
         <div className="flex justify-center mt-2 text-2xl">Journal</div>
 
         {isEditting ? (
-          <textarea className="h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2 rounded focus:border border-gray-400 outline-none" onChange={(e) => setJournalNotes(e.target.value)}>{journalNotes}</textarea>
+          <textarea className="h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2 focus:border border-gray-400 outline-none" onChange={(e) => setJournalNotes(e.target.value)}>{journalNotes}</textarea>
         ) : (
           <p className="h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2">{journalNotes}</p>
         )}
