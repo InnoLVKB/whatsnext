@@ -31,7 +31,7 @@ whatsnext is a calendar app that allows you to write down your thoughts, or what
 [electron-url]: https://www.electronjs.org/
 [tailwindcss.com]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [tailwindcss-url]: https://tailwindcss.com/
-[tailwindui.com]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-UI&logoColor=white
+[tailwindui.com]: https://img.shields.io/badge/Tailwind_UI-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [tailwindui-url]: https://tailwindui.com/
 [node.com]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
 [node-url]: https://nodejs.org/en/
