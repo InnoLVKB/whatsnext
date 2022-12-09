@@ -5,7 +5,7 @@ whatsnext is a calendar app that allows you to write down your thoughts, or what
 
 ## built with...
 * [![React][react.js]][react-url]
-* Next.js
+* [![Next.js][nextjs.com]][nextjs-url]
 * [![Typescript][typescript.com]][typescript-url]
 * [![PostgresSQL][postgres.dev]][postgres-url]
 * [![Node.js][node.com]][node-url]
@@ -39,5 +39,6 @@ whatsnext is a calendar app that allows you to write down your thoughts, or what
 [typescript-url]: https://www.typescriptlang.org/
 [webpack.com]: https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black
 [webpack-url]: https://webpack.js.org/
-[websocket.com]: https://img.shields.io/badge/WS-Websocket-2ea44f?style=for-the-badge&logo=appveyor
-[websocket-url]: https://webpack.js.org/
+[nextjs.com]: https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white
+[nextjs-url]: https://nextjs.org/
+
