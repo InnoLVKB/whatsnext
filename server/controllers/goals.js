@@ -9,7 +9,7 @@ const GoalsControllers = {
     db.query(query, values)
       .then((data) => {
         res.locals.goals = data.rows;
-        console.log('Grabbed goals for: ', date, res.locals.goals);
+        // console.log('Grabbed goals for: ', date, res.locals.goals);
         return next();
       })
       .catch((err) => next({
@@ -28,7 +28,7 @@ const GoalsControllers = {
     .then((data) => {
         const post = data.rows;
         res.locals.goals = post;
-        console.log("Posted Gaols",post);
+        // console.log("Posted Gaols",post);
         return next();
     })
     .catch((err) => next({
