@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+import bcrypt from 'bcrypt'
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 import db from '../../lib/db'
@@ -9,6 +8,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { method } = req;
     const { username, password } = req.body;
+    const saltRounds = 10;
     switch (method) {
       case 'POST':
         bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -26,7 +26,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(200).json(result.rows[0]);
               })
               .catch((err) => {
-                res.status(500).json({ error: 'Something went wrong' });
+                res.status(500).json({ error: 'This username already exists.' });
               }
             );
           });
