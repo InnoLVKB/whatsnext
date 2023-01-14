@@ -27,54 +27,70 @@ export default function Home() {
   const [selectedDay, setSelectedDay] = useState(today);
   const [selectedDayMood, setSelectedDayMood] = useState<string>('');
 
-//   useEffect(() => {
-//     Promise.all([
-//       fetch('http://localhost:4000/journal/date',
-//         {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body: JSON.stringify({
-//           date: today,
-//           user_id: 1
-//           })
-//         }),
-//       fetch('http://localhost:4000/goals/date',
-//         {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body: JSON.stringify({
-//           date: today,
-//           user_id: 1
-//           })
-//         }),
-//       fetch('http://localhost:4000/calendar',
-//         {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body: JSON.stringify({
-//           user_id: 1
-//           })
-//         })
-//       ])
-//       .then(([journalResponse, goalResponse, calResponse]) => {
-//         return Promise.all([journalResponse.json(), goalResponse.json(), calResponse.json()])
-//       })
-//       .then(([journalData, goalData, calData]) => {
-//         setJournalNotes(journalData.entry);
-//         setGoals(goalData);
-//         setMood(journalData.mood);
-//         setCalendarData(calData);
-//       })
-//   }, []);
+  useEffect(() => {
+      fetch('http://localhost:3000/api/journals/',
+        {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          date: today,
+          user_id: 1
+          })
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          setJournalNotes(data.entry);
+          setMood(data.mood);
+        })
+    // Promise.all([
+    //   fetch('http://localhost:3000/api/journals',
+    //     {
+    //     method: 'POST',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+    //       date: today,
+    //       user_id: 1
+    //       })
+    //     }),
+    //   fetch('http://localhost:3000/goals/date',
+    //     {
+    //     method: 'POST',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+    //       date: today,
+    //       user_id: 1
+    //       })
+    //     }),
+    //   fetch('http://localhost:3000/calendar',
+    //     {
+    //     method: 'POST',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+    //       user_id: 1
+    //       })
+    //     })
+    //   ])
+    //   .then(([journalResponse, goalResponse, calResponse]) => {
+    //     return Promise.all([journalResponse.json(), goalResponse.json(), calResponse.json()])
+    //   })
+    //   .then(([journalData, goalData, calData]) => {
+    //     setJournalNotes(journalData.entry);
+    //     setGoals(goalData);
+    //     setMood(journalData.mood);
+    //     setCalendarData(calData);
+    //   })
+  }, []);
 
 
   return (
     <div>
       <Header />
       <div className='flex justify-around h-1/3 space-x-8 m-6'>
-        <Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
+        {/* <Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} /> */}
         <Calendar today={today} selectedDay={selectedDay} calendarData={calendarData} setSelectedDay={setSelectedDay} setJournalNotes={setJournalNotes} setGoals={setGoals} setSelectedDayMood={setSelectedDayMood} setMood={setMood}/>
-        <Goals goals={goals} selectedDay={selectedDay} date={date} setGoals={setGoals} />
+        {/* <Goals goals={goals} selectedDay={selectedDay} date={date} setGoals={setGoals} /> */}
       </div>
       <Journal selectedDay={selectedDay} journalNotes={journalNotes} setJournalNotes={setJournalNotes} mood={mood} />
       {/* <JournalPage /> */}

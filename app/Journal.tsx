@@ -15,7 +15,7 @@ function Journal({ journalNotes, setJournalNotes, mood, selectedDay }: JournalPr
  
 
   const handleCreateAndUpdateJournal = () => {
-    fetch('http://localhost:4000/journal/new', {
+    fetch('http://localhost:3000/journal/new', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

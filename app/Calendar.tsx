@@ -82,33 +82,53 @@ export default function Calendar({ setJournalNotes, setGoals, today, selectedDay
   })
 
   const handleGetJournal = (day: Date) => {
-    Promise.all([
-    fetch('http://localhost:4000/journal/date', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        date: day.toISOString(),
-        user_id: 1
+      fetch('http://localhost:3000/api/journals', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          date: day.toISOString(),
+          user_id: 1
+        })
       })
-    }),
-    fetch('http://localhost:4000/goals/date', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        date: day.toISOString(),
-        user_id: 1
-      })
-    })
-    ])
-      .then(([journalResponse, goalResponse]) => {
-        return Promise.all([journalResponse.json(), goalResponse.json()])
-      })
-      .then(([journalData, goalData]) => {
-        setJournalNotes(journalData.entry);
-        setGoals(goalData);
-        setSelectedDayMood(journalData.mood)
-        setMood(''); // reset mood wnen new day is selected
-      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.length > 0) {
+            setJournalNotes(data[0].entry);
+            setSelectedDayMood(data[0].mood)
+            setMood(""); // reset mood wnen new day is selected
+          } else {
+            setJournalNotes("")
+            setSelectedDayMood("")
+            setMood("")
+          }
+        })
+    // Promise.all([
+    // fetch('http://localhost:3000/api/journals', {
+    //   method: 'POST',
+    //   headers: {'Content-Type': 'application/json'},
+    //   body: JSON.stringify({
+    //     date: day.toISOString(),
+    //     user_id: 1
+    //   })
+    // }),
+    // fetch('http://localhost:3000/api/goals', {
+    //   method: 'POST',
+    //   headers: {'Content-Type': 'application/json'},
+    //   body: JSON.stringify({
+    //     date: day.toISOString(),
+    //     user_id: 1
+    //   })
+    // })
+    // ])
+    //   .then(([journalResponse, goalResponse]) => {
+    //     return Promise.all([journalResponse.json(), goalResponse.json()])
+    //   })
+    //   .then(([journalData, goalData]) => {
+    //     setJournalNotes(journalData.entry);
+    //     setGoals(goalData);
+    //     setSelectedDayMood(journalData.mood)
+    //     setMood(''); // reset mood wnen new day is selected
+    //   })
   }
 
   return (
