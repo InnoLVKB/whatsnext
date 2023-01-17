@@ -4,35 +4,46 @@ import { redirect } from 'next/navigation'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation';
 import Image, { ImageProps } from 'next/image'
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { getProviders, signIn } from 'next-auth/react';
 import '../globals.css'
 
-function LoginPage() {
+// serversideprops not supported in appdir
+
+// export async function getServerSideProps(context) {
+//   const providers = await getProviders();
+//   return {
+//     props: { providers },
+//   };
+// }
+
+const providers = getProviders();
+
+export default function LoginPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const Router = useRouter()
 
-  const handleSubmit = () => {
-    fetch('http://localhost:3000/api/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username,
-          password
-        })
-      })
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        if (data.error) {
-          setError('Invalid username or password. Please try again.')
-        } else {
-          Router.push('/')
-        }
-      })
-  }
+  // const handleSubmit = () => {
+  //   fetch('http://localhost:3000/api/login', {
+  //       method: 'POST',
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: JSON.stringify({
+  //         username,
+  //         password
+  //       })
+  //     })
+  //     .then(res => {
+  //       return res.json()
+  //     })
+  //     .then(data => {
+  //       if (data.error) {
+  //         setError('Invalid username or password. Please try again.')
+  //       } else {
+  //         Router.push('/')
+  //       }
+  //     })
+  // }
 
   return (
     <div>
@@ -109,7 +120,7 @@ function LoginPage() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  onClick={handleSubmit}
+                  onClick={() => signIn("credentials", { username: username, password: password })}
                 >
                   Sign in
                 </button>
@@ -134,7 +145,14 @@ function LoginPage() {
               </div>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
-                <div>
+                {Object.values(providers).map((provider: any) => (
+                  <div key={provider.name}>
+                    <button onClick={() => signIn(provider.id)}>
+                      {provider.name}
+                    </button>
+                  </div>
+                ))}
+                {/* <div>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -174,7 +192,7 @@ function LoginPage() {
                       />
                     </svg>
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -183,5 +201,3 @@ function LoginPage() {
     </div>
   )
 }
-
-export default LoginPage;

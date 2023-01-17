@@ -8,6 +8,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 function Header() {
   // const { theme, toggleTheme } = useContext(ThemeContext);
   const { data: session, status } = useSession();
+  console.log('session', session);
 
   return (
     <div className='flex justify-between items-center w-screen px-5 bg-green-300 h-11'>
