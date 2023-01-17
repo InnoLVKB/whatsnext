@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation';
 import Image, { ImageProps } from 'next/image'
+import { useSession, signIn, signOut } from 'next-auth/react';
 import '../globals.css'
 
 function LoginPage() {
