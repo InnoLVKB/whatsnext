@@ -158,7 +158,7 @@ export default function LoginPage() {
                     </button>
                   </div>
                 ))} */}
-                <div>
+                <div onClick={() => signIn("facebook", { callbackUrl: "http://localhost:3000/dashboard"})}>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -174,7 +174,7 @@ export default function LoginPage() {
                   </a>
                 </div>
 
-                <div>
+                <div onClick={() => signIn("google", { callbackUrl: "http://localhost:3000/dashboard"})}>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
