@@ -30,34 +30,39 @@ export default function Home() {
 	// console.log("session: ", session);
 	// console.log("status: ", status);
 
-	const fetchJournal = () => {
-		// console.log("today", today.toISOString());
+	const fetchJournal = (userId) => {
 		fetch(
-			`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${1}`
+			`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${userId}`
 		)
 			.then((res) => res.json())
-			.then((journals) => {
-				// console.log("dashboard");
-				setJournalNotes(journals[0].entry);
-				setMood(journals[0].mood);
+			.then((journal) => {
+				if (journal.length === 0) {
+					return;
+				}
+				setJournalNotes(journal[0].entry);
+				setMood(journal[0].mood);
 			})
 			.catch((err) => console.log(err));
 	};
 
-	const fetchGoals = () => {
+	const fetchGoals = (userId) => {
 		fetch(
-			`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${1}`
+			`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${userId}`
 		)
 			.then((res) => res.json())
 			.then((goals) => {
-				console.log("goals list", goals);
 				setGoals(goals);
 			});
 	};
 
 	useEffect(() => {
-		fetchJournal();
-		fetchGoals();
+		// use Promise.all here
+		const user_id = localStorage.getItem("user_id") ?? "";
+		if (user_id === "") {
+			return;
+		}
+		fetchJournal(user_id);
+		fetchGoals(user_id);
 		// Promise.all([
 		//   fetch('http://localhost:3000/api/journals',
 		//     {

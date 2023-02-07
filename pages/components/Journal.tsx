@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { days } from "../../data/data";
+import { useState } from "react";
 
 type JournalPropsType = {
 	journalNotes: string;
@@ -17,19 +16,21 @@ function Journal({
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 
 	const handleCreateAndUpdateJournal = () => {
-		console.log("clicking save");
 		const date = selectedDay.toISOString();
-		fetch(`http://localhost:3000/api/journals/?date=${date}&user_id=${1}`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				entry: journalNotes,
-				mood: mood,
-			}),
-		})
+		const userId = localStorage.getItem("user_id") ?? "";
+		fetch(
+			`http://localhost:3000/api/journals/?date=${date}&user_id=${userId}`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					entry: journalNotes,
+					mood: mood,
+				}),
+			}
+		)
 			.then((res) => res.json())
 			.then((data) => {
-				// console.log("Journal component", data);
 				setJournalNotes(data.entry);
 				setIsEditting(!isEditting);
 			});

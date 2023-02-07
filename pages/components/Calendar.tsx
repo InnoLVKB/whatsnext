@@ -89,7 +89,8 @@ export default function Calendar({
 
 	const handleGetGoals = (day: Date) => {
 		const date = day.toISOString();
-		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${1}`)
+		const userId = localStorage.getItem("user_id") ?? "";
+		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${userId}`)
 			.then((res) => res.json())
 			.then((goals) => {
 				setGoals(goals);
@@ -98,7 +99,8 @@ export default function Calendar({
 
 	const handleGetJournal = (day: Date) => {
 		const date = day.toISOString();
-		fetch(`http://localhost:3000/api/journals/?date=${date}&user_id=${1}`)
+		const userId = localStorage.getItem("user_id") ?? "";
+		fetch(`http://localhost:3000/api/journals/?date=${date}&user_id=${userId}`)
 			.then((res) => res.json())
 			.then((journals) => {
 				if (journals.length > 0) {

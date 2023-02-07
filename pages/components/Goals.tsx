@@ -14,8 +14,9 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	const [description, setDescription] = useState<string>("");
 
 	const handleCreateGoal = () => {
+		const userId = localStorage.getItem("user_id") ?? "";
 		const date = selectedDay.toISOString();
-		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${1}`, {
+		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${userId}`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -34,7 +35,8 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	};
 
 	const handleCompleteGoal = (e: any, goal: any) => {
-		fetch(`http://localhost:3000/api/goals/?id=${goal.id}&user_id=${1}`, {
+		const userId = localStorage.getItem("user_id") ?? "";
+		fetch(`http://localhost:3000/api/goals/?id=${goal.id}&user_id=${userId}`, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -59,7 +61,8 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	};
 
 	const handleDeleteGoal = (goalId) => {
-		fetch(`http://localhost:3000/api/goals/?id=${goalId}&user_id=${1}`, {
+		const userId = localStorage.getItem("user_id") ?? "";
+		fetch(`http://localhost:3000/api/goals/?id=${goalId}&user_id=${userId}`, {
 			method: "DELETE",
 		})
 			.then((res) => res.json())
@@ -78,39 +81,44 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 			</div>
 			<fieldset className='space-y-3 p-2 h-40 overflow-x-auto scrollbar scrollbar-thumb-gray-700 scrollbar-track-gray-100'>
 				<legend className='sr-only'>Goals</legend>
-				{goals.map((goal: any, index: number) => {
-					let goalClassName = "ml-3 text-sm";
-					if (goal.status) {
-						goalClassName += " line-through";
-					}
-					return (
-						<div className='relative flex items-start' key={index}>
-							<div className='flex h-5 items-center'>
-								<input
-									id='comments'
-									aria-describedby='comments-description'
-									name='comments'
-									type='checkbox'
-									checked={goal.status}
-									className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-									onChange={(event) => handleCompleteGoal(event, goal)}
-								/>
-							</div>
-							<div id={goal.id} className={goalClassName}>
-								<label htmlFor='comments' className='font-medium text-gray-700'>
-									{goal.name}
-								</label>
-								<p className='text-gray-500'>{goal.description}</p>
-							</div>
-							<button
-								className='text-red-500 mx-2'
-								onClick={() => handleDeleteGoal(goal.id)}
-							>
-								Delete
-							</button>
-						</div>
-					);
-				})}
+				{goals.length > 0
+					? goals.map((goal: any, index: number) => {
+							let goalClassName = "ml-3 text-sm";
+							if (goal.status) {
+								goalClassName += " line-through";
+							}
+							return (
+								<div className='relative flex items-start' key={index}>
+									<div className='flex h-5 items-center'>
+										<input
+											id='comments'
+											aria-describedby='comments-description'
+											name='comments'
+											type='checkbox'
+											checked={goal.status}
+											className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+											onChange={(event) => handleCompleteGoal(event, goal)}
+										/>
+									</div>
+									<div id={goal.id} className={goalClassName}>
+										<label
+											htmlFor='comments'
+											className='font-medium text-gray-700'
+										>
+											{goal.name}
+										</label>
+										<p className='text-gray-500'>{goal.description}</p>
+									</div>
+									<button
+										className='text-red-500 mx-2'
+										onClick={() => handleDeleteGoal(goal.id)}
+									>
+										Delete
+									</button>
+								</div>
+							);
+					  })
+					: null}
 			</fieldset>
 			<div className='flex flex-col items-center gap-1 mt-6'>
 				<input

@@ -18,8 +18,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			case "POST":
 				const { name, description, status } = req.body;
 				dbResult = await db.query(
-					"INSERT INTO goals (name, description, date, status, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-					[name, description, query.date, status, query.user_id]
+					"INSERT INTO goals (name, description, status, date, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+					[name, description, status, query.date, query.user_id]
 				);
 				res.status(200).json(dbResult.rows[0]);
 				break;
