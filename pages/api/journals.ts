@@ -12,7 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 					"SELECT * FROM journal_entries WHERE date = $1 AND user_id = $2",
 					[query.date, query.user_id]
 				);
-				console.log("journal server");
 				res.status(200).json(dbResult.rows);
 				break;
 			// Create new journal
@@ -45,7 +44,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 async function createJournal(date, entry, mood, user_id) {
-	console.log("create");
 	const dbResult = await db.query(
 		"INSERT INTO journal_entries (date, entry, mood, user_id) VALUES ($1, $2, $3, $4) RETURNING *",
 		[date, entry, mood, user_id]
@@ -54,7 +52,6 @@ async function createJournal(date, entry, mood, user_id) {
 }
 
 async function updateJournal(journalId, entry, mood) {
-	console.log("update");
 	const dbResult = await db.query(
 		"UPDATE journal_entries SET entry = $1, mood = $2 WHERE id = $3 RETURNING *",
 		[entry, mood, journalId]

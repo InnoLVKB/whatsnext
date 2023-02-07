@@ -30,7 +30,7 @@ export default function Home() {
 	// console.log("session: ", session);
 	// console.log("status: ", status);
 
-	function fetchJournal() {
+	const fetchJournal = () => {
 		// console.log("today", today.toISOString());
 		fetch(
 			`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${1}`
@@ -42,10 +42,22 @@ export default function Home() {
 				setMood(journals[0].mood);
 			})
 			.catch((err) => console.log(err));
-	}
+	};
+
+	const fetchGoals = () => {
+		fetch(
+			`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${1}`
+		)
+			.then((res) => res.json())
+			.then((goals) => {
+				console.log("goals list", goals);
+				setGoals(goals);
+			});
+	};
 
 	useEffect(() => {
 		fetchJournal();
+		fetchGoals();
 		// Promise.all([
 		//   fetch('http://localhost:3000/api/journals',
 		//     {

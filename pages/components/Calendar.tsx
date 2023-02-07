@@ -87,10 +87,19 @@ export default function Calendar({
 		return { ...day, mood: mood?.mood };
 	});
 
+	const handleGetGoals = (day: Date) => {
+		const date = day.toISOString();
+		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${1}`)
+			.then((res) => res.json())
+			.then((goals) => {
+				setGoals(goals);
+			});
+	};
+
 	const handleGetJournal = (day: Date) => {
 		const date = day.toISOString();
 		fetch(`http://localhost:3000/api/journals/?date=${date}&user_id=${1}`)
-			.then((response) => response.json())
+			.then((res) => res.json())
 			.then((journals) => {
 				if (journals.length > 0) {
 					setJournalNotes(journals[0].entry);
@@ -102,6 +111,7 @@ export default function Calendar({
 					setMood("");
 				}
 			});
+
 		// Promise.all([
 		// fetch('http://localhost:3000/api/journals', {
 		//   method: 'POST',
@@ -179,6 +189,7 @@ export default function Calendar({
 									onClick={() => {
 										setSelectedDay(day);
 										handleGetJournal(day);
+										handleGetGoals(day);
 									}}
 									className={classNames(
 										moodColors[daysWithMoods[dayIdx].mood],
