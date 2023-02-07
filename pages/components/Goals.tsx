@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Switch } from '@headlessui/react'
-import { days } from '../data/data';
+import { days } from '../../data/data';
 
 interface Props {
   date: number,

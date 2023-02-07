@@ -3,14 +3,16 @@ import { redirect } from 'next/navigation'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation';
 import Image, { ImageProps } from 'next/image'
-import { getProviders, signIn, useSession, signOut } from 'next-auth/react';
+import { getProviders, signIn } from 'next-auth/react';
 
-export async function getServerSideProps(context) {
-  const providers = await getProviders();
-  return {
-    props: { providers },
-  };
-}
+// serversideprops not supported in appdir
+
+// export async function getServerSideProps(context) {
+//   const providers = await getProviders();
+//   return {
+//     props: { providers },
+//   };
+// }
 
 const providers = getProviders();
 
@@ -19,11 +21,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const Router = useRouter()
-
-  const { data: session, status } = useSession()
-
-  console.log('session: ', session)
-  console.log('status: ', status)
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/login', {
@@ -41,14 +38,9 @@ export default function LoginPage() {
         if (data.error) {
           setError('Invalid username or password. Please try again.')
         } else {
-          console.log(data)
-          Router.push('/dashboard');
+          Router.push('/')
         }
       })
-  }
-
-  if (session) {
-    Router.push('/dashboard')
   }
 
   return (
@@ -61,7 +53,7 @@ export default function LoginPage() {
             alt="Your Company"
           /> */}
           <Image src="/whatsnext.png" alt="whatsnext" width={200} height={200} className="mx-auto h-20 w-auto" />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Create an Account</h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -99,38 +91,8 @@ export default function LoginPage() {
                   />
                 </div>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Forgot your password?
-                  </a>
-                </div>
-              </div>
               
               <div className="text-red-500 text-sm font-medium">{error}</div>
-
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  onClick={handleSubmit}
-                >
-                  Sign in
-                </button>
-              </div>
               <button
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -151,14 +113,14 @@ export default function LoginPage() {
               </div>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
-                {/* {Object.values(providers).map((provider: any) => (
+                {Object.values(providers).map((provider: any) => (
                   <div key={provider.name}>
                     <button onClick={() => signIn(provider.id)}>
                       {provider.name}
                     </button>
                   </div>
-                ))} */}
-                <div onClick={() => signIn("facebook", { callbackUrl: "http://localhost:3000/dashboard"})}>
+                ))}
+                <div>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -174,7 +136,7 @@ export default function LoginPage() {
                   </a>
                 </div>
 
-                <div onClick={() => signIn("google", { callbackUrl: "http://localhost:3000/dashboard"})}>
+                <div>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
@@ -184,7 +146,7 @@ export default function LoginPage() {
                   </a>
                 </div>
 
-                <div onClick={() => signIn("github", { callbackUrl: "http://localhost:3000/dashboard"})}>
+                <div>
                   <a
                     href="#"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
