@@ -13,7 +13,8 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	const [goal, setGoal] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 
-	const handleCreateGoal = () => {
+	const handleCreateGoal = (e) => {
+		e.preventDefault();
 		const user = JSON.parse(localStorage.getItem("user")) ?? "";
 		const date = selectedDay.toISOString();
 		fetch(
@@ -30,7 +31,7 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 		)
 			.then((res) => res.json())
 			.then((newGoal) => {
-				setGoals((prevGoals: any) => [...prevGoals, newGoal]);
+				setGoals((prevGoals: any) => [newGoal, ...prevGoals]);
 				setGoal("");
 				setDescription("");
 			})
@@ -129,7 +130,10 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 					  })
 					: null}
 			</fieldset>
-			<div className='flex flex-col items-center gap-1 mt-6'>
+			<form
+				className='flex flex-col items-center gap-1 mt-6'
+				onSubmit={handleCreateGoal}
+			>
 				<input
 					value={goal}
 					onChange={(e) => setGoal(e.target.value)}
@@ -142,15 +146,12 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 					className='h-12 text-c  enter rounded bg-white border-solid border-2 outline-none w-3/4'
 					placeholder='Write a Description...'
 				></input>
-			</div>
-			<div className='flex justify-center'>
-				<button
-					className='my-1 rounded bg-green-400 px-2'
-					onClick={handleCreateGoal}
-				>
-					Add Goal
-				</button>
-			</div>
+				<div className='flex justify-center'>
+					<button type='submit' className='my-1 rounded bg-green-400 px-2'>
+						Add Goal
+					</button>
+				</div>
+			</form>
 		</div>
 	);
 }

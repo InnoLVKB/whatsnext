@@ -116,7 +116,8 @@ export default function Calendar({
 					setSelectedDayMood("");
 					setMood("");
 				}
-			});
+			})
+			.catch((err) => console.log(err));
 	};
 
 	return (

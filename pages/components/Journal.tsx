@@ -15,7 +15,9 @@ function Journal({
 }: JournalPropsType) {
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 
-	const handleCreateAndUpdateJournal = () => {
+	const handleCreateAndUpdateJournal = (e: any) => {
+		e.preventDefault();
+		const journalForm = new FormData(e.target);
 		const date = selectedDay.toISOString();
 		const user = JSON.parse(localStorage.getItem("user")) ?? "";
 		if (user === "") {
@@ -27,7 +29,7 @@ function Journal({
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					entry: journalNotes,
+					entry: journalForm.get("journal-notes") ?? "",
 					mood: mood,
 				}),
 			}
@@ -36,7 +38,8 @@ function Journal({
 			.then((data) => {
 				setJournalNotes(data.entry);
 				setIsEditting(!isEditting);
-			});
+			})
+			.catch((err) => console.log(err));
 	};
 
 	return (
@@ -48,24 +51,24 @@ function Journal({
 				Edit
 			</button>
 
-			{isEditting && (
-				<button
-					className='rounded absolute top-0 right-10 bg-green-400 px-2 mr-2'
-					onClick={handleCreateAndUpdateJournal}
-				>
-					Save
-				</button>
-			)}
-
 			<div className='flex justify-center mt-2 text-2xl'>Journal</div>
 
 			{isEditting ? (
-				<textarea
-					className='h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2 focus:border border-gray-400 outline-none'
-					onChange={(e) => setJournalNotes(e.target.value)}
-				>
-					{journalNotes}
-				</textarea>
+				<form onSubmit={handleCreateAndUpdateJournal}>
+					<textarea
+						id='journal-notes'
+						name='journal-notes'
+						className='h-[18rem] w-11/12 mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2 focus:border border-gray-400 outline-none'
+					>
+						{journalNotes}
+					</textarea>
+					<button
+						type='submit'
+						className='rounded absolute top-0 right-10 bg-green-400 px-2 mr-2'
+					>
+						Save
+					</button>
+				</form>
 			) : (
 				<p className='h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2'>
 					{journalNotes}

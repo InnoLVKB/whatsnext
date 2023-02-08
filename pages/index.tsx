@@ -58,7 +58,8 @@ export default function Home() {
 				}
 				setJournalNotes(journalData[0].entry);
 				setMood(journalData[0].mood);
-			});
+			})
+			.catch((err) => console.log(err));
 	}, []);
 
 	return (

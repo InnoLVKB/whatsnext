@@ -17,8 +17,6 @@ import { getProviders, signIn } from "next-auth/react";
 const providers = getProviders();
 
 export default function LoginPage() {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const Router = useRouter();
 
@@ -85,7 +83,7 @@ export default function LoginPage() {
 									<input
 										id='username'
 										name='username'
-										type='username'
+										type='text'
 										autoComplete='username'
 										required
 										className='block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
