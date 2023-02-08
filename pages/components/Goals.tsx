@@ -14,17 +14,20 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	const [description, setDescription] = useState<string>("");
 
 	const handleCreateGoal = () => {
-		const userId = localStorage.getItem("user_id") ?? "";
+		const user = JSON.parse(localStorage.getItem("user")) ?? "";
 		const date = selectedDay.toISOString();
-		fetch(`http://localhost:3000/api/goals/?date=${date}&user_id=${userId}`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				name: goal,
-				description: description,
-				status: false,
-			}),
-		})
+		fetch(
+			`http://localhost:3000/api/goals/?date=${date}&user_id=${user.userId}`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					name: goal,
+					description: description,
+					status: false,
+				}),
+			}
+		)
 			.then((res) => res.json())
 			.then((newGoal) => {
 				setGoals((prevGoals: any) => [...prevGoals, newGoal]);
@@ -35,16 +38,19 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	};
 
 	const handleCompleteGoal = (e: any, goal: any) => {
-		const userId = localStorage.getItem("user_id") ?? "";
-		fetch(`http://localhost:3000/api/goals/?id=${goal.id}&user_id=${userId}`, {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				name: goal.name,
-				description: goal.description,
-				status: !goal.status,
-			}),
-		})
+		const user = JSON.parse(localStorage.getItem("user")) ?? "";
+		fetch(
+			`http://localhost:3000/api/goals/?id=${goal.id}&user_id=${user.userId}`,
+			{
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					name: goal.name,
+					description: goal.description,
+					status: !goal.status,
+				}),
+			}
+		)
 			.then((res) => res.json())
 			.then((updatedGoal) => {
 				setGoals((prevGoals: any) => {
@@ -61,10 +67,13 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	};
 
 	const handleDeleteGoal = (goalId) => {
-		const userId = localStorage.getItem("user_id") ?? "";
-		fetch(`http://localhost:3000/api/goals/?id=${goalId}&user_id=${userId}`, {
-			method: "DELETE",
-		})
+		const user = JSON.parse(localStorage.getItem("user")) ?? "";
+		fetch(
+			`http://localhost:3000/api/goals/?id=${goalId}&user_id=${user.userId}`,
+			{
+				method: "DELETE",
+			}
+		)
 			.then((res) => res.json())
 			.then((deletedGoal) => {
 				setGoals((prevGoals: any) =>

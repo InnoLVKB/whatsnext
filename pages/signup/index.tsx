@@ -38,7 +38,11 @@ export default function LoginPage() {
 				if (userData.error) {
 					setError("Invalid username or password. Please try again.");
 				} else {
-					localStorage.setItem("user_id", userData.user_id);
+					const user = {
+						userId: userData.user_id,
+						username: userData.username,
+					};
+					localStorage.setItem("user", JSON.stringify(user));
 					Router.push("/");
 				}
 			});

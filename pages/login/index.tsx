@@ -16,10 +16,8 @@ const providers = getProviders();
 
 export default function LoginPage() {
 	const [error, setError] = useState("");
-	const { data: session, status } = useSession(); // OAuth
+	// const { data: session, status } = useSession(); // OAuth
 	const Router = useRouter();
-
-	// console.log("login", session);
 
 	const handleLogin = (e: any) => {
 		e.preventDefault();
@@ -37,7 +35,11 @@ export default function LoginPage() {
 				if (userData.error) {
 					setError("Invalid username or password. Please try again.");
 				} else {
-					localStorage.setItem("user_id", userData.user_id);
+					const user = {
+						userId: userData.user_id,
+						username: userData.username,
+					};
+					localStorage.setItem("user", JSON.stringify(user));
 					Router.push("/");
 				}
 			});

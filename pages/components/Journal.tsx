@@ -17,9 +17,12 @@ function Journal({
 
 	const handleCreateAndUpdateJournal = () => {
 		const date = selectedDay.toISOString();
-		const userId = localStorage.getItem("user_id") ?? "";
+		const user = JSON.parse(localStorage.getItem("user")) ?? "";
+		if (user === "") {
+			return;
+		}
 		fetch(
-			`http://localhost:3000/api/journals/?date=${date}&user_id=${userId}`,
+			`http://localhost:3000/api/journals/?date=${date}&user_id=${user.userId}`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

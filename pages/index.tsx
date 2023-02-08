@@ -23,88 +23,47 @@ export default function Home() {
 	const today = startOfToday();
 	const [selectedDay, setSelectedDay] = useState(today);
 	const [selectedDayMood, setSelectedDayMood] = useState<string>("");
+	const [user, setUser] = useState("");
 
-	// const { data: session, status } = useSession();
 	const Router = useRouter();
-
+	// const { data: session, status } = useSession();
 	// console.log("session: ", session);
 	// console.log("status: ", status);
 
-	const fetchJournal = (userId) => {
-		fetch(
-			`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${userId}`
-		)
-			.then((res) => res.json())
-			.then((journal) => {
-				if (journal.length === 0) {
-					return;
-				}
-				setJournalNotes(journal[0].entry);
-				setMood(journal[0].mood);
-			})
-			.catch((err) => console.log(err));
-	};
-
-	const fetchGoals = (userId) => {
-		fetch(
-			`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${userId}`
-		)
-			.then((res) => res.json())
-			.then((goals) => {
-				setGoals(goals);
-			});
-	};
-
 	useEffect(() => {
-		// use Promise.all here
-		const user_id = localStorage.getItem("user_id") ?? "";
-		if (user_id === "") {
+		const user = JSON.parse(localStorage.getItem("user")) ?? "";
+		setUser(user);
+		if (user === "") {
 			return;
 		}
-		fetchJournal(user_id);
-		fetchGoals(user_id);
-		// Promise.all([
-		//   fetch('http://localhost:3000/api/journals',
-		//     {
-		//     method: 'POST',
-		//     headers: {'Content-Type': 'application/json'},
-		//     body: JSON.stringify({
-		//       date: today,
-		//       user_id: 1
-		//       })
-		//     }),
-		//   fetch('http://localhost:3000/goals/date',
-		//     {
-		//     method: 'POST',
-		//     headers: {'Content-Type': 'application/json'},
-		//     body: JSON.stringify({
-		//       date: today,
-		//       user_id: 1
-		//       })
-		//     }),
-		//   fetch('http://localhost:3000/calendar',
-		//     {
-		//     method: 'POST',
-		//     headers: {'Content-Type': 'application/json'},
-		//     body: JSON.stringify({
-		//       user_id: 1
-		//       })
-		//     })
-		//   ])
-		//   .then(([journalResponse, goalResponse, calResponse]) => {
-		//     return Promise.all([journalResponse.json(), goalResponse.json(), calResponse.json()])
-		//   })
-		//   .then(([journalData, goalData, calData]) => {
-		//     setJournalNotes(journalData.entry);
-		//     setGoals(goalData);
-		//     setMood(journalData.mood);
-		//     setCalendarData(calData);
-		//   })
+		Promise.all([
+			fetch(
+				`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${
+					user.userId
+				}`
+			),
+			fetch(
+				`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${
+					user.userId
+				}`
+			),
+		])
+			.then(([journalRes, goalsRes]) => {
+				return Promise.all([journalRes.json(), goalsRes.json()]);
+			})
+			.then(([journalData, goalsData]) => {
+				setGoals(goalsData);
+				if (journalData.length === 0) {
+					return;
+				}
+				setJournalNotes(journalData[0].entry);
+				setMood(journalData[0].mood);
+			});
 	}, []);
 
 	return (
 		<div>
-			<Header />
+			<Header user={user} />
 			{/* <h1>{session ? session.user?.name : "No name"}</h1> */}
 			{/* <h1>{session.user?.name}</h1> */}
 			<div className='flex justify-around h-1/3 space-x-8 m-6'>
@@ -126,12 +85,18 @@ export default function Home() {
 					setGoals={setGoals}
 				/>
 			</div>
-			<Journal
-				selectedDay={selectedDay}
-				journalNotes={journalNotes}
-				setJournalNotes={setJournalNotes}
-				mood={mood}
-			/>
+			{user === "" ? (
+				<h1 className='flex justify-center text-2xl font-bold text-gray-900'>
+					Sign in to start your journal
+				</h1>
+			) : (
+				<Journal
+					selectedDay={selectedDay}
+					journalNotes={journalNotes}
+					setJournalNotes={setJournalNotes}
+					mood={mood}
+				/>
+			)}
 			{/* {session ? (
 				<Journal
 					selectedDay={selectedDay}
