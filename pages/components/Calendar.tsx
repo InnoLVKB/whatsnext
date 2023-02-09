@@ -134,18 +134,16 @@ export default function Calendar ({
     <Draggable disabled={!dragStatus}>
       <Resizable
         defaultSize={{
-          width: '33%',
-          height: 380
+          width: '33vw',
+          height: '50vh'
         }}
-        minWidth="33%"
-        minHeight={380}
-        //  maxWidth={9000}
-        //  maxHeight={9000}
-        className="bg-white px-10 rounded-lg border-black border-2"
+        minWidth={380}
+        minHeight={200}
+        className="bg-white mx-5 rounded-lg shadow-md border-black border-2"
       >
         <div>
           <div className="text-center">
-            <div className="flex items-center text-gray-900 my-5">
+            <div className="flex items-center text-gray-900 my-5 border-b-2 border-black">
               <button
                 type="button"
                 onClick={previousMonth}

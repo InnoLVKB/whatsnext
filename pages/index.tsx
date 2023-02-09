@@ -1,16 +1,12 @@
-import { useState, createContext, useEffect } from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React, { useState, useEffect } from 'react'
 import Calendar from './components/Calendar'
 import Goals from './components/Goals'
 import Header from './components/Header'
 import Journal from './components/Journal'
 import Mood from './components/Mood'
-import Test from './components/test'
 // import JournalPage from './journal/page'
 import { startOfToday } from 'date-fns'
-import { getProviders, signIn, useSession, signOut } from 'next-auth/react'
+// import { getProviders, signIn, useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 // export const ThemeContext = createContext(null);
@@ -66,11 +62,11 @@ export default function Home () {
   }, [])
 
   return (
-    <div className="bg-green-100">
+    <div className="bg-[#E0F6E3]">
       <Header user={user} />
       {/* <h1>{session ? session.user?.name : "No name"}</h1> */}
       {/* <h1>{session.user?.name}</h1> */}
-      <div className="sm:grid sm:grid-cols-1 sm:justify-center sm:items-center lg:flex lg:justify-around lg:h-1/3 lg:space-x-8 lg:m-6">
+      <div className="sm:grid sm:grid-cols-1 sm:justify-center sm:items-center lg:flex lg:justify-around lg:space-x-1 lg:m-6">
         <Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
         <Calendar
           today={today}

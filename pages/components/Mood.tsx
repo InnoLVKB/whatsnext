@@ -27,14 +27,14 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
     <Draggable disabled={!dragStatus}>
       <Resizable
         defaultSize={{
-          width: 380,
-          height: 380
+          width: '33vw',
+          height: '50vh'
         }}
         minWidth={380}
         minHeight={200}
         // maxWidth={9000}
         // maxHeight={9000}
-        className="bg-white border-2 rounded-md border-black"
+        className="bg-white border-2 rounded-lg shadow-md border-black"
       >
         <div className="flex justify-center text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">
           <p className={montserrat.className}>mood</p>

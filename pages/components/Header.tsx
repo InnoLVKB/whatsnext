@@ -66,10 +66,10 @@ function Header ({ user }) {
             <div>
               <span className="mx-2">{user.username}</span>
               <button
-                className="bg-transparent text-black font-semibold py-1 px-4 border border-black hover:border-transparent rounded"
+                className="bg-transparent text-black font-semibold py-1 px-4 border border-black hover:border-gray-600 hover:text-gray-500 rounded"
                 onClick={handleSignout}
               >
-                Sign out
+                sign out
               </button>
             </div>
               )}

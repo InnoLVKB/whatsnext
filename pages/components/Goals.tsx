@@ -100,15 +100,12 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
     <Draggable disabled={!dragStatus}>
       <Resizable
         defaultSize={{
-          width: '33%',
-          height: 380
+          width: '33vw',
+          height: '50vh'
         }}
-        minWidth="33%"
-        minHeight={380}
-        maxWidth={9000}
-        // maxHeight={9000}
-
-        className="bg-white border-2 rounded-md border-black"
+        minWidth={380}
+        minHeight={200}
+        className="bg-white border-2 rounded-lg shadow-md border-black"
       >
         <div className="text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">
           <span className={montserrat.className}>goals</span>
@@ -117,12 +114,12 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
           <legend className="sr-only">Goals</legend>
           {goals.length > 0
             ? goals.map((goal: any, index: number) => {
-              let goalClassName = 'ml-3 text-sm'
+              let goalClassName = 'ml-3 text-sm w-full'
               if (goal.status) {
                 goalClassName += ' line-through'
               }
               return (
-                  <div className="relative flex items-start" key={index}>
+                  <div className="relative flex flex-row w-full" key={index}>
                     <div className="flex h-5 items-center">
                       <input
                         id="comments"
@@ -145,14 +142,19 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
                       </label>
                       <p className="text-gray-500">{goal.description}</p>
                     </div>
-                    <button
-                      className="text-red-500 mx-2"
-                      onClick={() => {
-                        handleDeleteGoal(goal.id)
-                      }}
-                    >
-                      Delete
-                    </button>
+                    <div className="float-right">
+                      <button
+                        className="text-red-500 mx-2"
+                        onClick={() => {
+                          handleDeleteGoal(goal.id)
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
               )
             })
@@ -168,19 +170,19 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
               setGoal(e.target.value)
             }}
             className="rounded text-center bg-white border-solid border-2 outline-none w-3/4"
-            placeholder="Write a Goal..."
+            placeholder="write a goal..."
           ></input>
           <input
             value={description}
             onChange={(e) => {
               setDescription(e.target.value)
             }}
-            className="h-12 text-c  enter rounded bg-white border-solid border-2 outline-none w-3/4"
-            placeholder="Write a Description..."
+            className="h-12 text-center rounded bg-white border-solid border-2 outline-none w-3/4"
+            placeholder="write a description..."
           ></input>
           <div className="flex justify-center">
-            <button type="submit" className="my-1 rounded bg-green-400 px-2">
-              Add Goal
+            <button type="submit" className="my-1 rounded bg-pink-100 px-4 shadow-sm">
+              add goal
             </button>
           </div>
         </form>

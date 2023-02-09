@@ -65,12 +65,12 @@ function Journal ({
       >
         <div className="flex flex-col bg-white m-6">
           <button
-            className="rounded absolute top-0 right-0 bg-green-200 px-2"
+            className="rounded absolute top-2 right-2 bg-pink-100 py-1 px-3 shadow-sm"
             onClick={() => {
               setIsEditting(!isEditting)
             }}
           >
-            Edit
+            edit
           </button>
 
           <div className="flex justify-center mt-2 text-xl">
@@ -89,9 +89,9 @@ function Journal ({
               </textarea>
               <button
                 type="submit"
-                className="rounded absolute top-0 right-10 bg-green-400 px-2 mr-2"
+                className="rounded absolute top-2 right-2 bg-pink-100 py-1 px-3"
               >
-                Save
+                save
               </button>
             </form>
               )
