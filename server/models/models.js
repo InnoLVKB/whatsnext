@@ -1,11 +1,12 @@
 // const path = require('path');
-import path from 'path'
+import path from "path";
 // import from 'dotenv'.config()
 // require("dotenv").config({
 //   path: path.resolve(__dirname, './.env')
 // });
 
-const connectionString = 'postgres://pxcddmbe:soXd8-HF0Fz9__fNMoqeFXTq3upUEnWN@heffalump.db.elephantsql.com/pxcddmbe';
+const connectionString =
+  "postgres://pxcddmbe:soXd8-HF0Fz9__fNMoqeFXTq3upUEnWN@heffalump.db.elephantsql.com/pxcddmbe";
 
 // const { Pool } = require("pg");
 // const pool = new Pool({
@@ -19,7 +20,7 @@ const connectionString = 'postgres://pxcddmbe:soXd8-HF0Fz9__fNMoqeFXTq3upUEnWN@h
 //   },
 // };
 
-import { Pool } from 'pg';
+import { Pool } from "pg";
 const pool = new Pool({
   connectionString: connectionString,
 });

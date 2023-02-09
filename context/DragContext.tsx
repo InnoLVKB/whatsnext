@@ -1,17 +1,17 @@
-import {createContext, useState, useContext} from 'react';
+import React, { createContext, useState, useContext } from 'react'
 
 interface ContextProps {
-  dragStatus: boolean,
-  setDragStatus: (status: boolean) => void,
+  dragStatus: boolean
+  setDragStatus: (status: boolean) => void
 }
 
 export const DragContext = createContext<ContextProps>({
   dragStatus: false,
-  setDragStatus: () => {},
-});
+  setDragStatus: () => {}
+})
 
 const DragContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [dragStatus, setDragStatus] = useState(false);
+  const [dragStatus, setDragStatus] = useState(false)
 
   return (
     <DragContext.Provider
@@ -19,12 +19,12 @@ const DragContextProvider = ({ children }: { children: React.ReactNode }) => {
         dragStatus,
         setDragStatus
       }}
-      >
+    >
       {children}
     </DragContext.Provider>
   )
 }
 
-export const useDragContext = () => useContext(DragContext);
+export const useDragContext = () => useContext(DragContext)
 
-export default DragContextProvider;
+export default DragContextProvider

@@ -1,12 +1,12 @@
-import { Pool } from "pg";
+import { Pool } from 'pg'
 
-let db;
-const connectionString = process.env.CONNECTION_STRING;
+let db
+const connectionString = process.env.CONNECTION_STRING
 
 if (!db) {
   db = new Pool({
-    connectionString: connectionString,
-  });
+    connectionString
+  })
 }
 
-export default db;
+export default db

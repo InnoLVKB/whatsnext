@@ -19,7 +19,7 @@ const JournalControllers = require("../controllers/journal.js");
 
 //Journal Post Delete   date, user_id   res: "Successfully deleted journal entry!"
 journal.delete("/:id", JournalControllers.deleteJournal, function (req, res) {
-	return res.status(200).send("Successfully deleted journal entry!");
+  return res.status(200).send("Successfully deleted journal entry!");
 });
 
 module.exports = journal;
