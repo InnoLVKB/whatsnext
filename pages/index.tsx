@@ -68,7 +68,7 @@ export default function Home() {
 			<Header user={user} />
 			{/* <h1>{session ? session.user?.name : "No name"}</h1> */}
 			{/* <h1>{session.user?.name}</h1> */}
-			<div className='lg:flex lg:justify-around lg:h-1/3 lg:space-x-8 lg:m-6'>
+			<div className='sm:grid sm:grid-cols-1 sm:justify-center sm:items-center lg:flex lg:justify-around lg:h-1/3 lg:space-x-8 lg:m-6'>
 				<Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
 				<Calendar
 					today={today}
