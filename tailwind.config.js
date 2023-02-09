@@ -6,7 +6,12 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+      }
+    },
   },
   plugins: [
     require('tailwind-scrollbar'),

@@ -11,6 +11,12 @@ import {
 	isToday,
 	parse,
 } from "date-fns";
+import { Montserrat } from "@next/font/google";
+import Draggable from 'react-draggable';
+import { Resizable } from 're-resizable';
+import { useDragContext } from "../../context/DragContext";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: "700" });
 
 function classNames(...classes: any) {
 	return classes.filter(Boolean).join(" ");
@@ -39,6 +45,8 @@ export default function Calendar({
 }: CalendarProps) {
 	const [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
 	const firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
+
+	const { dragStatus } = useDragContext();
 
 	const days = eachDayOfInterval({
 		start: firstDayCurrentMonth,
@@ -73,7 +81,7 @@ export default function Calendar({
 		angry: "bg-red-400",
 	};
 
-	// combine moods and dates rom calendar data
+	// combine moods and dates from calendar data
 	const calMoods: Array<any> = [];
 	for (let i = 0; i < calendarData.length; i++) {
 		calMoods.push({
@@ -118,10 +126,21 @@ export default function Calendar({
 				}
 			})
 			.catch((err) => console.log(err));
+
 	};
 
 	return (
-		<div className='w-[480px] px-10 bg-pink-100 rounded-lg'>
+		<Draggable disabled={!dragStatus}>
+		<Resizable
+      defaultSize={{
+        width: '33%',
+       height: 380,
+     }}
+     minWidth='33%'
+     minHeight={380}
+    //  maxWidth={9000}
+    //  maxHeight={9000}
+			className='bg-white px-10 rounded-lg border-black border-2'>
 			<div>
 				<div className='text-center'>
 					<div className='flex items-center text-gray-900 my-5'>
@@ -133,8 +152,10 @@ export default function Calendar({
 							<span className='sr-only'>Previous month</span>
 							<ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
 						</button>
-						<div className='flex-auto font-semibold'>
-							{format(firstDayCurrentMonth, "MMMM yyyy")}
+						<div className='flex-auto font-semibold lowercase'>
+							<span className={montserrat.className}>
+								{format(firstDayCurrentMonth, "MMMM yyyy")}
+							</span>
 						</div>
 						<button
 							type='button'
@@ -201,6 +222,7 @@ export default function Calendar({
 					</div>
 				</div>
 			</div>
-		</div>
+		</Resizable>
+		</Draggable>
 	);
 }

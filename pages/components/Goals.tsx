@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { days } from "../../data/data";
+import { Montserrat } from "@next/font/google";
+import Draggable from 'react-draggable';
+import { Resizable } from 're-resizable';
+import { useDragContext } from "../../context/DragContext";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: "500" });
 
 interface Props {
 	date: number;
@@ -12,6 +18,8 @@ interface Props {
 function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	const [goal, setGoal] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
+
+	const { dragStatus } = useDragContext();
 
 	const handleCreateGoal = (e) => {
 		e.preventDefault();
@@ -85,9 +93,20 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 	};
 
 	return (
-		<div className='w-4/12 h-full border-2 rounded-md border-green-400'>
-			<div className='text-center mt-5 font-bold border-solid border-opacity-70 border-green-400 border-b-2'>
-				Goals
+		<Draggable disabled={!dragStatus}>
+		<Resizable
+      defaultSize={{
+     		width: '33%',
+      	height: 380,
+      }}
+			minWidth='33%'
+      minHeight={380}
+      maxWidth={9000}
+      // maxHeight={9000}
+
+		 className='bg-white border-2 rounded-md border-black'>
+			<div className='text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2'>
+				<span className={montserrat.className}>goals</span>
 			</div>
 			<fieldset className='space-y-3 p-2 h-40 overflow-x-auto scrollbar scrollbar-thumb-gray-700 scrollbar-track-gray-100'>
 				<legend className='sr-only'>Goals</legend>
@@ -152,7 +171,8 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 					</button>
 				</div>
 			</form>
-		</div>
+		</Resizable>
+		</Draggable>
 	);
 }
 

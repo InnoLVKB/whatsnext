@@ -1,4 +1,10 @@
 import { useState } from "react";
+import { Montserrat } from "@next/font/google";
+import Draggable from 'react-draggable';
+import { Resizable } from 're-resizable';
+import { useDragContext } from "../../context/DragContext";
+
+const montserrat = Montserrat({ subsets: ["latin"], weight: "500" });
 
 type JournalPropsType = {
 	journalNotes: string;
@@ -14,7 +20,7 @@ function Journal({
 	selectedDay,
 }: JournalPropsType) {
 	const [isEditting, setIsEditting] = useState<boolean>(false);
-
+	const { dragStatus } = useDragContext();
 	const handleCreateAndUpdateJournal = (e: any) => {
 		e.preventDefault();
 		const journalForm = new FormData(e.target);
@@ -43,15 +49,29 @@ function Journal({
 	};
 
 	return (
-		<div className='flex flex-col bg-slate-50 h-[22rem] m-6 shadow rounded-lg border-solid border-green-400 border-2 relative'>
+		<Draggable disabled={!dragStatus}>
+		<Resizable
+		defaultSize={{
+			 width: '95%',
+		   height: '10rem',
+		  }}
+		  // minWidth={380}
+		  // minHeight={380}
+		  // maxWidth={9000}
+		  // maxHeight={9000}
+		  className= 'shadow rounded-lg border-solid border-black border-2 relative bg-white'
+		>
+			<div className='flex flex-col bg-white m-6'>
 			<button
-				className='rounded absolute top-0 right-0 bg-green-400 px-2'
+				className='rounded absolute top-0 right-0 bg-green-200 px-2'
 				onClick={() => setIsEditting(!isEditting)}
 			>
 				Edit
 			</button>
 
-			<div className='flex justify-center mt-2 text-2xl'>Journal</div>
+			<div className='flex justify-center mt-2 text-xl'>
+				<h1 className={montserrat.className}>journal</h1>
+			</div>
 
 			{isEditting ? (
 				<form onSubmit={handleCreateAndUpdateJournal}>
@@ -70,11 +90,13 @@ function Journal({
 					</button>
 				</form>
 			) : (
-				<p className='h-[19rem] mx-8 mt-3 mb-3 bg-pink-100 rounded-lg text-black px-2'>
+				<p className='h-[19rem] mx-8 mt-3 mb-3 bg-white rounded-lg text-black px-2'>
 					{journalNotes}
 				</p>
 			)}
-		</div>
+			</div>
+		</Resizable>
+		</Draggable>
 	);
 }
 

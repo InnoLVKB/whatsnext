@@ -7,6 +7,7 @@ import Goals from "./components/Goals";
 import Header from "./components/Header";
 import Journal from "./components/Journal";
 import Mood from "./components/Mood";
+import Test from "./components/test";
 // import JournalPage from './journal/page'
 import { startOfToday } from "date-fns";
 import { getProviders, signIn, useSession, signOut } from "next-auth/react";
@@ -63,11 +64,11 @@ export default function Home() {
 	}, []);
 
 	return (
-		<div>
+		<div className="bg-green-100">
 			<Header user={user} />
 			{/* <h1>{session ? session.user?.name : "No name"}</h1> */}
 			{/* <h1>{session.user?.name}</h1> */}
-			<div className='flex justify-around h-1/3 space-x-8 m-6'>
+			<div className='lg:flex lg:justify-around lg:h-1/3 lg:space-x-8 lg:m-6'>
 				<Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
 				<Calendar
 					today={today}
