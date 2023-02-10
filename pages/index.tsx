@@ -7,23 +7,21 @@ import Mood from './components/Mood'
 // import JournalPage from './journal/page'
 import { startOfToday } from 'date-fns'
 // import { getProviders, signIn, useSession, signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 
 // export const ThemeContext = createContext(null);
 
 export default function Home () {
-  const [date, setDate] = useState<number>(15)
+  // const [date, setDate] = useState<number>(15)
   const [journalNotes, setJournalNotes] = useState<string>('')
   const [goals, setGoals] = useState<any[]>([])
   const [mood, setMood] = useState<string>('')
-  const [calendarData, setCalendarData] = useState<any[]>([])
+  // const [calendarData, setCalendarData] = useState<any[]>([])
   const [daysWithMoods, setDaysWithMoods] = useState<any[]>([])
   const today = startOfToday()
   const [selectedDay, setSelectedDay] = useState(today)
   const [selectedDayMood, setSelectedDayMood] = useState<string>('')
   const [user, setUser] = useState('')
 
-  const Router = useRouter()
   // const { data: session, status } = useSession();
   // console.log("session: ", session);
   // console.log("status: ", status);
@@ -39,19 +37,19 @@ export default function Home () {
         `http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${
           user.userId
         }`, {
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
         }
       ),
       fetch(
         `http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${
           user.userId
         }`, {
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
         }
       ),
       fetch(
         `http://localhost:3000/api/calendar/?user_id=${user.userId}`, {
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
         }
       )
     ])
@@ -88,7 +86,8 @@ export default function Home () {
       <Header user={user} />
       {/* <h1>{session ? session.user?.name : "No name"}</h1> */}
       {/* <h1>{session.user?.name}</h1> */}
-      <div className="sm:grid sm:grid-cols-1 lg:flex lg:justify-around lg:space-x-1 lg:m-6">
+      <div className="flex justify-center mt-5">
+      <div className="flex flex-col lg:flex-row justify-center space-y-2 lg:justify-around lg:space-x-1 lg:m-6 lg:align-top">
         <Mood
           mood={mood}
           setMood={setMood}
@@ -112,6 +111,7 @@ export default function Home () {
           date={date}
           setGoals={setGoals}
         />
+      </div>
       </div>
       <div className="flex justify-center">
       {user === ''

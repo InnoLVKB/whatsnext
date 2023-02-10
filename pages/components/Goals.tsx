@@ -102,11 +102,11 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
       <Resizable
         defaultSize={{
           width: '33vw',
-          height: '50vh'
+          height: '25vh'
         }}
         minWidth={380}
         minHeight={350}
-        className="bg-white border-2 rounded-lg shadow-md border-black"
+        className="bg-white relative border-2 rounded-lg shadow-md border-black"
       >
         <div className="text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">
           <span className={montserrat.className}>goals</span>

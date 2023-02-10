@@ -44,13 +44,13 @@ function Mood ({ mood, setMood, selectedDayMood, daysWithMoods, setDaysWithMoods
       <Resizable
         defaultSize={{
           width: '33vw',
-          height: '50vh'
+          height: '25vh'
         }}
         minWidth={380}
         minHeight={200}
         // maxWidth={9000}
         // maxHeight={9000}
-        className="bg-white border-2 rounded-lg shadow-md border-black flex flex-col sm:w-screen"
+        className="bg-white relative border-2 rounded-lg shadow-md border-black flex flex-col sm:w-screen"
       >
         <div className="flex justify-center text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">
           <p className={montserrat.className}>mood</p>

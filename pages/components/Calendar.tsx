@@ -143,11 +143,11 @@ export default function Calendar ({
       <Resizable
         defaultSize={{
           width: '33vw',
-          height: '50vh'
+          height: '25vh'
         }}
         minWidth={380}
-        minHeight={350}
-        className="bg-white mx-5 rounded-lg shadow-md border-black border-2"
+        minHeight={310}
+        className="bg-white relative rounded-lg shadow-md border-black border-2 sm:w-screen sm:m-0 sm:p-0"
       >
         <div>
           <div className="text-center">
@@ -221,7 +221,7 @@ export default function Calendar ({
                       !isEqual(day, selectedDay) && 'hover:bg-gray-200',
                       (isEqual(day, selectedDay) || isToday(day)) &&
                         'font-semibold',
-                      'mx-auto flex h-8 w-8 items-center justify-center rounded-full'
+                      'mx-auto flex h-5 w-5 items-center justify-center rounded-full'
                     )}
                   >
                     <time dateTime={format(day, 'yyyy-MM-dd')}>
