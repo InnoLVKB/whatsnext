@@ -36,7 +36,8 @@ export default function LoginPage () {
         } else {
           const user = {
             userId: userData.user_id,
-            username: userData.username
+            username: userData.username,
+            token: userData.token
           }
           localStorage.setItem('user', JSON.stringify(user))
           Router.push('/')
@@ -148,7 +149,6 @@ export default function LoginPage () {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  // onClick={handleLogin}
                 >
                   Sign in
                 </button>
@@ -160,7 +160,7 @@ export default function LoginPage () {
                   Router.push('/signup')
                 }}
               >
-                Sign Up
+                Sign up
               </button>
             </div>
             <div className="mt-6">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import {
   add,
@@ -31,6 +31,7 @@ interface CalendarProps {
   calendarData: any[]
   setSelectedDayMood: React.Dispatch<React.SetStateAction<string>>
   setMood: React.Dispatch<React.SetStateAction<string>>
+  daysWithMoods: any[]
 }
 
 export default function Calendar ({
@@ -41,9 +42,11 @@ export default function Calendar ({
   setSelectedDay,
   calendarData,
   setSelectedDayMood,
-  setMood
+  setMood,
+  daysWithMoods
 }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
+  const [moodDayArr, setMoodDayArr] = useState<any[]>([])
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
 
   const { dragStatus } = useDragContext()
@@ -78,22 +81,23 @@ export default function Calendar ({
     happy: 'bg-green-300',
     content: 'bg-green-100',
     sad: 'bg-blue-300',
-    angry: 'bg-red-400'
+    mad: 'bg-red-400',
+    undefined: ''
   }
 
-  // combine moods and dates from calendar data
-  const calMoods: any[] = []
-  for (let i = 0; i < calendarData.length; i++) {
-    calMoods.push({
-      date: new Date(calendarData[i].date),
-      mood: calendarData[i].mood
-    })
-  }
   // match moods to days array
-  const daysWithMoods = days.map((day) => {
-    const mood = calMoods.find((calMood) => isEqual(calMood.date, day))
-    return { ...day, mood: mood?.mood }
-  })
+  // const moodDayArr = days.map((day) => {
+  //   const mood = daysWithMoods.find((calMood) => isEqual(calMood.date, day))
+  //   return { ...day, mood: mood?.mood }
+  // })
+  useEffect(() => {
+    setMoodDayArr(days.map((day) => {
+      const mood = daysWithMoods.find((calMood) => isEqual(calMood.date, day))
+      return { ...day, mood: mood?.mood }
+    }))
+    console.log('moods: ', moodDayArr)
+    console.log('rerendered calendar component')
+  }, [daysWithMoods])
 
   const handleCalendarClick = (day: any) => {
     setSelectedDay(day)
@@ -104,10 +108,14 @@ export default function Calendar ({
     }
     Promise.all([
       fetch(
-        `http://localhost:3000/api/journals/?date=${date}&user_id=${user.userId}`
+        `http://localhost:3000/api/journals/?date=${date}&user_id=${user.userId}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
       ),
       fetch(
-        `http://localhost:3000/api/goals/?date=${date}&user_id=${user.userId}`
+        `http://localhost:3000/api/goals/?date=${date}&user_id=${user.userId}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
       )
     ])
       .then(async ([journalRes, goalsRes]) => {
@@ -138,7 +146,7 @@ export default function Calendar ({
           height: '50vh'
         }}
         minWidth={380}
-        minHeight={200}
+        minHeight={350}
         className="bg-white mx-5 rounded-lg shadow-md border-black border-2"
       >
         <div>
@@ -193,7 +201,8 @@ export default function Calendar ({
                       // handleGetGoals(day);
                     }}
                     className={classNames(
-                      moodColors[daysWithMoods[dayIdx].mood],
+                      moodDayArr[dayIdx]?.mood &&
+                        moodColors[moodDayArr[dayIdx]?.mood],
                       isEqual(day, selectedDay) && 'text-white bg-gray-900',
                       !isEqual(day, selectedDay) &&
                         isToday(day) &&

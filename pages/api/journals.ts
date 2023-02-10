@@ -1,5 +1,6 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import db from '../../lib/db'
+import { auth } from '../../lib/authMiddleware'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -8,7 +9,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     switch (method) {
       // Fetch journal by date and user_id
       case 'GET':
-        // console.log(query.user_id);
+        const { userId } = auth(req);
+        // console.log(userId)
         dbResult = await db.query(
           'SELECT * FROM journal_entries WHERE date = $1 AND user_id = $2',
           [query.date, query.user_id]

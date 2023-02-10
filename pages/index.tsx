@@ -17,6 +17,7 @@ export default function Home () {
   const [goals, setGoals] = useState<any[]>([])
   const [mood, setMood] = useState<string>('')
   const [calendarData, setCalendarData] = useState<any[]>([])
+  const [daysWithMoods, setDaysWithMoods] = useState<any[]>([])
   const today = startOfToday()
   const [selectedDay, setSelectedDay] = useState(today)
   const [selectedDayMood, setSelectedDayMood] = useState<string>('')
@@ -37,24 +38,45 @@ export default function Home () {
       fetch(
         `http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${
           user.userId
-        }`
+        }`, {
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+        }
       ),
       fetch(
         `http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${
           user.userId
-        }`
+        }`, {
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+        }
+      ),
+      fetch(
+        `http://localhost:3000/api/calendar/?user_id=${user.userId}`, {
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` }
+        }
       )
     ])
-      .then(async ([journalRes, goalsRes]) => {
-        return await Promise.all([journalRes.json(), goalsRes.json()])
+      .then(async ([journalRes, goalsRes, calendarData]) => {
+        return await Promise.all([journalRes.json(), goalsRes.json(), calendarData.json()])
       })
-      .then(([journalData, goalsData]) => {
+      .then(([journalData, goalsData, calendarData]) => {
         setGoals(goalsData)
         if (journalData.length === 0) {
           return
         }
         setJournalNotes(journalData[0].entry)
         setMood(journalData[0].mood)
+        const calMoods: any[] = []
+        if (calendarData.length === 0) {
+          setDaysWithMoods([])
+        } else {
+          for (let i = 0; i < calendarData.length; i++) {
+            calMoods.push({
+              date: new Date(calendarData[i].date),
+              mood: calendarData[i].mood
+            })
+          }
+          setDaysWithMoods(calMoods)
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -66,12 +88,18 @@ export default function Home () {
       <Header user={user} />
       {/* <h1>{session ? session.user?.name : "No name"}</h1> */}
       {/* <h1>{session.user?.name}</h1> */}
-      <div className="sm:grid sm:grid-cols-1 sm:justify-center sm:items-center lg:flex lg:justify-around lg:space-x-1 lg:m-6">
-        <Mood mood={mood} setMood={setMood} selectedDayMood={selectedDayMood} />
+      <div className="sm:grid sm:grid-cols-1 lg:flex lg:justify-around lg:space-x-1 lg:m-6">
+        <Mood
+          mood={mood}
+          setMood={setMood}
+          selectedDayMood={selectedDayMood}
+          daysWithMoods={daysWithMoods}
+          setDaysWithMoods={setDaysWithMoods} />
         <Calendar
           today={today}
           selectedDay={selectedDay}
           calendarData={calendarData}
+          daysWithMoods={daysWithMoods}
           setSelectedDay={setSelectedDay}
           setJournalNotes={setJournalNotes}
           setGoals={setGoals}
@@ -85,6 +113,7 @@ export default function Home () {
           setGoals={setGoals}
         />
       </div>
+      <div className="flex justify-center">
       {user === ''
         ? (
         <h1 className="flex justify-center text-2xl font-bold text-gray-900">
@@ -97,6 +126,7 @@ export default function Home () {
           journalNotes={journalNotes}
           setJournalNotes={setJournalNotes}
           mood={mood}
+          setDaysWithMoods={setDaysWithMoods}
         />
           )}
       {/* {session ? (
@@ -111,6 +141,7 @@ export default function Home () {
 					Please log in to see your journals
 				</h1>
 			)} */}
+      </div>
     </div>
   )
 }

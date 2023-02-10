@@ -11,16 +11,32 @@ interface MoodPropsType {
   mood: string
   setMood: React.Dispatch<React.SetStateAction<string>>
   selectedDayMood: string
+  daysWithMoods: any[]
+  setDaysWithMoods: React.Dispatch<React.SetStateAction<any[]>>
 }
 
-function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
+function Mood ({ mood, setMood, selectedDayMood, daysWithMoods, setDaysWithMoods }: MoodPropsType) {
   const { dragStatus } = useDragContext()
   function handleMoodChange (mood) {
     setMood(mood)
+    setDaysWithMoods((prev) => {
+      const day = prev.find((day) => day.date === selectedDayMood)
+      if (day) {
+        return prev.map((day) => {
+          if (day.date === selectedDayMood) {
+            return { ...day, mood: mood }
+          } else {
+            return day
+          }
+        })
+      } else {
+        return [...prev, { date: selectedDayMood, mood: mood }]
+      }
+    })
   }
 
   const buttonStyle =
-    'rounded-full h-auto w-1/5 focus:animate-bounce focus:border-red-900 border-solid border-opacity-70 border-2 drop-shadow-sm'
+    'rounded-full focus:animate-bounce focus:border-red-900 drop-shadow-sm'
   const imageStyle = 'rounded-full'
 
   return (
@@ -34,16 +50,17 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
         minHeight={200}
         // maxWidth={9000}
         // maxHeight={9000}
-        className="bg-white border-2 rounded-lg shadow-md border-black"
+        className="bg-white border-2 rounded-lg shadow-md border-black flex flex-col sm:w-screen"
       >
         <div className="flex justify-center text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">
           <p className={montserrat.className}>mood</p>
         </div>
-        <div className="flex h-64 justify-center place-items-center">
+        <div className="flex align-middle justify-center h-full">
           {/* <h1>{mood}</h1> */}
           <div className="flex space-x-2">
             <button
               className={`${buttonStyle}`}
+              id="excited"
               onClick={(e) => {
                 handleMoodChange(e.target.id)
               }}
@@ -59,6 +76,7 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
             </button>
             <button
               className={`${buttonStyle}`}
+              id="happy"
               onClick={(e) => {
                 handleMoodChange(e.target.id)
               }}
@@ -74,6 +92,7 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
             </button>
             <button
               className={`${buttonStyle}`}
+              id="content"
               onClick={(e) => {
                 handleMoodChange(e.target.id)
               }}
@@ -89,6 +108,7 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
             </button>
             <button
               className={`${buttonStyle}`}
+              id="sad"
               onClick={(e) => {
                 handleMoodChange(e.target.id)
               }}
@@ -104,6 +124,7 @@ function Mood ({ mood, setMood, selectedDayMood }: MoodPropsType) {
             </button>
             <button
               className={`${buttonStyle}`}
+              id="mad"
               onClick={(e) => {
                 handleMoodChange(e.target.id)
               }}

@@ -27,7 +27,7 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
       `http://localhost:3000/api/goals/?date=${date}&user_id=${user.userId}`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({
           name: goal,
           description,
@@ -52,7 +52,7 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
       `http://localhost:3000/api/goals/?id=${goal.id}&user_id=${user.userId}`,
       {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({
           name: goal.name,
           description: goal.description,
@@ -82,7 +82,8 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
     fetch(
       `http://localhost:3000/api/goals/?id=${goalId}&user_id=${user.userId}`,
       {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
       }
     )
       .then(async (res) => await res.json())
@@ -104,7 +105,7 @@ function Goals ({ goals, setGoals, selectedDay }: Props) {
           height: '50vh'
         }}
         minWidth={380}
-        minHeight={200}
+        minHeight={350}
         className="bg-white border-2 rounded-lg shadow-md border-black"
       >
         <div className="text-center text-xl p-2 font-bold border-solid border-opacity-70 border-black border-b-2">

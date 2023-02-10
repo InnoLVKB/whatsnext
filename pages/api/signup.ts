@@ -1,6 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import bcrypt from 'bcrypt'
 import db from '../../lib/db'
+import jwt from 'jsonwebtoken'
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -16,12 +17,15 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
               message: { err: 'Error occurred' }
             }
           }
-          const query =
-            'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id'
-          const values = [username, hash]
-          db.query(query, values)
-            .then((result) => {
-              res.status(200).json(result.rows[0])
+          db.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id, username', [username, hash])
+            .then((dbResult) => {
+              const token = jwt.sign({ user_id: dbResult.rows[0].user_id, username: dbResult.rows[0].username }, process.env.JWT_SECRET, { expiresIn: '1d' })
+              res.status(200).json({
+                message: 'User logged in',
+                username: dbResult.rows[0].username,
+                user_id: dbResult.rows[0].user_id,
+                token
+              })
             })
             .catch(() => {
               res.status(500).json({ error: 'This username already exists.' })
