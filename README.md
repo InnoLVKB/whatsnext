@@ -43,3 +43,4 @@ whatsnext is a calendar app that allows you to write down your thoughts, or what
 [webpack-url]: https://webpack.js.org/
 [nextjs.com]: https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white
 [nextjs-url]: https://nextjs.org/
+
