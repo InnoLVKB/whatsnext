@@ -1,13 +1,12 @@
 import { format } from "date-fns";
 import { useContext } from "react";
 // import { ThemeContext } from '../app';
-import { useSession, signIn, signOut } from "next-auth/react";
 // import { Router } from 'next/router';
 import { useRouter } from "next/navigation";
 
 function Header({ user }) {
 	// const { theme, toggleTheme } = useContext(ThemeContext);
-	const { data: session, status } = useSession();
+	// const { data: session, status } = useSession();
 	const Router = useRouter();
 	// console.log('session', session);
 
@@ -25,7 +24,7 @@ function Header({ user }) {
 					</button>
 				) : (
 					<div>
-						<span className='mx-2'>{user.username}</span>
+						{/* <span className='mx-2'>{user.username}</span> */}
 						<button
 							className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded'
 							onClick={handleSignout}

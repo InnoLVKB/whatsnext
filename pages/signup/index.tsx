@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import Image, { ImageProps } from "next/image";
-import { getProviders, signIn } from "next-auth/react";
+// import { getProviders, signIn } from "next-auth/react";
 
 // serversideprops not supported in appdir
 
@@ -14,7 +14,7 @@ import { getProviders, signIn } from "next-auth/react";
 //   };
 // }
 
-const providers = getProviders();
+// const providers = getProviders();
 
 export default function LoginPage() {
 	const [error, setError] = useState("");
@@ -132,19 +132,19 @@ export default function LoginPage() {
 							</div>
 
 							<div className='mt-6 grid grid-cols-3 gap-3'>
-								{Object.values(providers).map((provider: any) => (
+								{/* {Object.values(providers).map((provider: any) => (
 									<div key={provider.name}>
 										<button onClick={() => signIn(provider.id)}>
 											{provider.name}
 										</button>
 									</div>
-								))}
+								))} */}
 								<div
-									onClick={() =>
-										signIn("facebook", {
-											callbackUrl: "http://localhost:3000/",
-										})
-									}
+									// onClick={() =>
+									// 	signIn("facebook", {
+									// 		callbackUrl: "http://localhost:3000/",
+									// 	})
+									// }
 								>
 									<a
 										href='#'
@@ -167,9 +167,9 @@ export default function LoginPage() {
 								</div>
 
 								<div
-									onClick={() =>
-										signIn("google", { callbackUrl: "http://localhost:3000/" })
-									}
+									// onClick={() =>
+									// 	signIn("google", { callbackUrl: "http://localhost:3000/" })
+									// }
 								>
 									<a
 										href='#'
@@ -191,9 +191,9 @@ export default function LoginPage() {
 								</div>
 
 								<div
-									onClick={() =>
-										signIn("github", { callbackUrl: "http://localhost:3000/" })
-									}
+									// onClick={() =>
+									// 	signIn("github", { callbackUrl: "http://localhost:3000/" })
+									// }
 								>
 									<a
 										href='#'

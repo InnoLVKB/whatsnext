@@ -91,7 +91,7 @@ function Goals({ goals, date, setGoals, selectedDay }: Props) {
 			</div>
 			<fieldset className='space-y-3 p-2 h-40 overflow-x-auto scrollbar scrollbar-thumb-gray-700 scrollbar-track-gray-100'>
 				<legend className='sr-only'>Goals</legend>
-				{goals.length > 0
+				{goals !== null
 					? goals.map((goal: any, index: number) => {
 							let goalClassName = "ml-3 text-sm";
 							if (goal.status) {

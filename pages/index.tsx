@@ -9,7 +9,6 @@ import Journal from "./components/Journal";
 import Mood from "./components/Mood";
 // import JournalPage from './journal/page'
 import { startOfToday } from "date-fns";
-import { getProviders, signIn, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 // export const ThemeContext = createContext(null);
@@ -38,12 +37,12 @@ export default function Home() {
 		}
 		Promise.all([
 			fetch(
-				`http://localhost:3000/api/journals/?date=${today.toISOString()}&user_id=${
+				`/api/journals/?date=${today.toISOString()}&user_id=${
 					user.userId
 				}`
 			),
 			fetch(
-				`http://localhost:3000/api/goals/?date=${today.toISOString()}&user_id=${
+				`/api/goals/?date=${today.toISOString()}&user_id=${
 					user.userId
 				}`
 			),

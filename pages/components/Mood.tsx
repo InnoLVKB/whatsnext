@@ -24,19 +24,19 @@ function Mood({ mood, setMood, selectedDayMood }: MoodPropsType) {
       <div className='flex h-64 justify-center place-items-center'>
         {/* <h1>{mood}</h1> */}
         <div className='flex space-x-2'>
-          <button className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
+          <button className={`${buttonStyle}`} onClick={(e: any)=> handleMoodChange(e.target.id)}>
             <Image id="excited" className={`${imageStyle}`} src='/excited.png' alt='excited' width='80' height='100'/>
           </button>
-          <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
+          <button  className={`${buttonStyle}`} onClick={(e: any)=> handleMoodChange(e.target.id)}>
             <Image id="happy" className={`${imageStyle}`} src='/happy.png' alt='happy' width='80' height='100' />
           </button>
-          <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
+          <button  className={`${buttonStyle}`} onClick={(e: any)=> handleMoodChange(e.target.id)}>
             <Image id="content" className={`${imageStyle}`} src='/content.png' alt='content' width='80' height='100' />
           </button>
-          <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
+          <button  className={`${buttonStyle}`} onClick={(e: any)=> handleMoodChange(e.target.id)}>
             <Image id="sad" className={`${imageStyle}`} src='/sad.png' alt='sad' width='80' height='100' />
           </button>
-          <button  className={`${buttonStyle}`} onClick={(e)=> handleMoodChange(e.target.id)}>
+          <button  className={`${buttonStyle}`} onClick={(e: any)=> handleMoodChange(e.target.id)}>
             <Image id="mad" className={`${imageStyle}`} src='/mad.png' alt='mad' width='80' height='100' />
           </button>
         </div>

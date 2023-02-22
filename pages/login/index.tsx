@@ -3,16 +3,16 @@ import { redirect } from "next/navigation";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import Image, { ImageProps } from "next/image";
-import { getProviders, signIn, useSession, signOut } from "next-auth/react";
+// import { getProviders, signIn, useSession, signOut } from "next-auth/react";
 
-export async function getServerSideProps(context) {
-	const providers = await getProviders();
-	return {
-		props: { providers },
-	};
-}
-
-const providers = getProviders();
+// export async function getServerSideProps(context) {
+// 	const providers = await getProviders();
+// 	return {
+// 		props: { providers },
+// 	};
+// }
+// // 
+// const providers = getProviders();
 
 export default function LoginPage() {
 	const [error, setError] = useState("");
@@ -179,11 +179,11 @@ export default function LoginPage() {
                   </div>
                 ))} */}
 								<div
-									onClick={() =>
-										signIn("facebook", {
-											callbackUrl: "http://localhost:3000/",
-										})
-									}
+									// onClick={() =>
+									// 	signIn("facebook", {
+									// 		callbackUrl: "http://localhost:3000/",
+									// 	})
+									// }
 								>
 									<a
 										href='#'
@@ -206,9 +206,9 @@ export default function LoginPage() {
 								</div>
 
 								<div
-									onClick={() =>
-										signIn("google", { callbackUrl: "http://localhost:3000/" })
-									}
+									// onClick={() =>
+									// 	signIn("google", { callbackUrl: "http://localhost:3000/" })
+									// }
 								>
 									<a
 										href='#'
@@ -230,9 +230,9 @@ export default function LoginPage() {
 								</div>
 
 								<div
-									onClick={() =>
-										signIn("github", { callbackUrl: "http://localhost:3000/" })
-									}
+									// onClick={() =>
+									// 	signIn("github", { callbackUrl: "http://localhost:3000/" })
+									// }
 								>
 									<a
 										href='#'
